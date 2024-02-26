@@ -20,6 +20,7 @@ public:
 private:
     GENERATED_BODY()
 
+    UPROPERTY()
     UW_EnergyBase* EnergyWidget = nullptr;
 
 protected:
