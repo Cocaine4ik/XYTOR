@@ -15,6 +15,7 @@ bool UQuest::Init(FName QuestName)
     // Check if the DataTable is loaded successfully
     if (QuestTable)
     {
+        NameInTable=QuestName;
         FS_Quest* QuestData = QuestTable->FindRow<FS_Quest>(QuestName, "");
         Title = QuestData->Title;
         Description = QuestData->Description;
@@ -52,4 +53,24 @@ bool UQuest::Update(EE_SubquestType Type)
     }
 
     return false;
+}
+
+const FText& UQuest::GetTitle() const
+{
+    return Title;
+}
+
+const FText& UQuest::GetDescription() const
+{
+    return Description;
+}
+
+const FName& UQuest::GetNameInTable() const
+{
+    return NameInTable;
+}
+
+const TArray<USubquest*>& UQuest::GetSubquests() const
+{
+    return Subquests;
 }

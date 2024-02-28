@@ -28,3 +28,12 @@ void APC_Quests::BeginPlay()
         PS_Quests->OnQuestChanged.AddUniqueDynamic(QuestListWidget, &UW_QuestListBase::UpdateQuest);
     }
 }
+
+void APC_Quests::DisplayQuests() const
+{
+    AHUD_WidgetManager* HUD = Cast<AHUD_WidgetManager> (GetHUD());
+    if(HUD)
+    {
+        HUD->ToggleNormalWidgetByClass(QuestListWidgetClass);
+    }
+}

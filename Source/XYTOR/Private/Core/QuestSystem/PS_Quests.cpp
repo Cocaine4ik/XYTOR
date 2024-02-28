@@ -28,6 +28,7 @@ void APS_Quests::AddQuest(FName QuestName)
     if (Quest)
     {
         AvailableQuests.Push(Quest);
+        OnQuestChanged.Broadcast(Quest);
     }
     else
     {

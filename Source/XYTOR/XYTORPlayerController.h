@@ -8,13 +8,14 @@
 #include "InputActionValue.h"
 #include "Core/Energy/PC_Energy.h"
 #include "Core/Information/PC_Information.h"
+#include "Core/QuestSystem/PC_Quests.h"
 #include "XYTORPlayerController.generated.h"
 
 /** Forward declaration to improve compiling times */
 class UNiagaraSystem;
 
 UCLASS()
-class AXYTORPlayerController : public APC_Energy
+class AXYTORPlayerController : public APC_Quests
 {
 	GENERATED_BODY()
 

@@ -10,12 +10,15 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class XYTOR_API USubquest : public UObject
 {
 	GENERATED_BODY()
 
+protected:
+    UPROPERTY(BlueprintReadOnly)
     FS_Subquest Data;
+    UPROPERTY(BlueprintReadOnly)
     bool bComplete;
 public:
     bool Init(const FS_Subquest& SubquestInfo);

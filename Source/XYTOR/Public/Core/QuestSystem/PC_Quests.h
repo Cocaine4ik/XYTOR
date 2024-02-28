@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Core/Energy/PC_Energy.h"
 #include "GameFramework/PlayerController.h"
 #include "Widgets/W_QuestListBase.h"
 #include "Core/WidgetManager/HUD_WidgetManager.h"
@@ -12,16 +13,18 @@
  * 
  */
 UCLASS()
-class XYTOR_API APC_Quests : public APlayerController
+class XYTOR_API APC_Quests : public APC_Energy
 {
     GENERATED_BODY()
 public:
     UPROPERTY()
     UW_QuestListBase* QuestListWidget;
 protected:
-    UPROPERTY(EditAnywhere)
+    UPROPERTY(EditAnywhere, Category="Widgets")
     TSubclassOf<UW_QuestListBase> QuestListWidgetClass;
 public:
     virtual void BeginPlay() override;
+    UFUNCTION(BlueprintCallable)
+    void DisplayQuests() const;
 	
 };
