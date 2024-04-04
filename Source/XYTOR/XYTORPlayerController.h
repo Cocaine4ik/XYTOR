@@ -8,6 +8,7 @@
 #include "InputActionValue.h"
 #include "Core/Energy/PC_Energy.h"
 #include "Core/Information/PC_Information.h"
+#include "Core/Interaction/PC_Interaction.h"
 #include "Core/QuestSystem/PC_Quests.h"
 #include "XYTORPlayerController.generated.h"
 
@@ -15,7 +16,7 @@
 class UNiagaraSystem;
 
 UCLASS()
-class AXYTORPlayerController : public APC_Quests
+class AXYTORPlayerController : public APC_Interaction
 {
 	GENERATED_BODY()
 

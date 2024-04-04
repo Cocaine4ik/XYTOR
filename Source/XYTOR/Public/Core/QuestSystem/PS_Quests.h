@@ -29,8 +29,9 @@ public:
     FOnQuestChanged OnQuestChanged;
     
     void UpdateQuests(EE_SubquestType Type);
+    UFUNCTION(BlueprintCallable)
     void AddQuest(FName QuestName);
-    
+
     void TokensChanged();
     void ItemsChanged();
 };

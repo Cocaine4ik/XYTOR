@@ -27,6 +27,7 @@ void APS_Quests::AddQuest(FName QuestName)
     UQuest* Quest = NewObject<UQuest>(UQuest::StaticClass());
     if (Quest)
     {
+        Quest->Init(QuestName);
         AvailableQuests.Push(Quest);
         OnQuestChanged.Broadcast(Quest);
     }

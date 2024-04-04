@@ -9,7 +9,7 @@
 
 bool USubquest::Init(const FS_Subquest& SubquestInfo)
 {
-    const bool bInitialised = Init(SubquestInfo.DataName);
+    const bool bInitialised = InitByName(SubquestInfo.DataName);
     if (!bInitialised)
         return false;
 

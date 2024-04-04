@@ -27,5 +27,5 @@ public:
     static USubquest* MakeSubquest(const FS_Subquest& Data, UObject* Parent);
 protected:
     virtual bool Update() PURE_VIRTUAL(USubquest::Update, return false;);
-    virtual bool Init(FName SubquestName) PURE_VIRTUAL(USubquest::SubquestName, return false;);
+    virtual bool InitByName(FName SubquestName) PURE_VIRTUAL(USubquest::InitByName, return false;);
 };

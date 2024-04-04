@@ -28,8 +28,8 @@ protected:
     UPROPERTY(BlueprintReadOnly)
     FName NameInTable;
 
-    bool Init(FName QuestName);
 public:
+    bool Init(FName QuestName);
 
     
     UQuest() = default;
