@@ -20,7 +20,6 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DialogueGraph")
     FDialogueConditionData ConditionData;
     
-    
     FText DefaultNodeTitle;
     
 public:
