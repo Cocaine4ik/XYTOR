@@ -1,5 +1,5 @@
 # Temporary ignore
-Content/AdditionalPacks/*
+Content/AdditionalPacks/
 
 # Visual Studio 2015 user specific files
 .vs/
