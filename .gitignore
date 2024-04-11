@@ -1,12 +1,3 @@
-# Temporary ignore
-Content/AdditionalPacks/**/Materials/*
-Content/AdditionalPacks/**/Meshes/*
-Content/AdditionalPacks/**/Particles/*
-Content/AdditionalPacks/**/Sequences/*
-Content/AdditionalPacks/**/Textures/*
-Content/AdditionalPacks/**/Folliage/*
-
-
 # Visual Studio 2015 user specific files
 .vs/
 
