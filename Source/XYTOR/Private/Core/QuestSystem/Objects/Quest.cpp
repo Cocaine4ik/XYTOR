@@ -3,34 +3,22 @@
 
 #include "Core/QuestSystem/Objects/Quest.h"
 
+#include "Core/ExtraTools.h"
 #include "Core/QuestSystem/Structures/S_Quest.h"
 
 bool UQuest::Init(FName QuestName)
 {
-    static FString QuestTablePath = "/Script/Engine.DataTable'/Game/XYTOR/DataTables/QuestSystem/DT_Quests.DT_Quests'";
-
-    // Load the DataTable asset
-    UDataTable* QuestTable = LoadObject<UDataTable>(nullptr, *QuestTablePath);
-
-    // Check if the DataTable is loaded successfully
-    if (QuestTable)
+    const FString QuestTablePath = "/Script/Engine.DataTable'/Game/XYTOR/DataTables/QuestSystem/DT_Quests.DT_Quests'";
+    if (const FS_Quest* QuestData = ExtraTools::GetStructureFromTable<FS_Quest>(QuestTablePath, QuestName))
     {
-        NameInTable=QuestName;
-        FS_Quest* QuestData = QuestTable->FindRow<FS_Quest>(QuestName, "");
         Title = QuestData->Title;
         Description = QuestData->Description;
-
         for (auto SubquestInfo: QuestData->Subquests)
         {
             Subquests.Push(USubquest::MakeSubquest(SubquestInfo, this));
         }
+        return true;
     }
-    else
-    {
-        // Handle the case where loading the DataTable failed
-        UE_LOG(LogTemp, Error, TEXT("Failed to load DataTable: %s"), *QuestTablePath);
-    }
-
     return false;
 }
 

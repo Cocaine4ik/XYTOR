@@ -16,10 +16,9 @@ UCLASS()
 class XYTOR_API APC_Quests : public APC_Energy
 {
     GENERATED_BODY()
-public:
+protected:
     UPROPERTY()
     UW_QuestListBase* QuestListWidget;
-protected:
     UPROPERTY(EditAnywhere, Category="Widgets")
     TSubclassOf<UW_QuestListBase> QuestListWidgetClass;
 public:
