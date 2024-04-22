@@ -22,6 +22,7 @@ protected:
 
 public:
     virtual void BeginPlay() override;
+    
     UFUNCTION(BlueprintCallable)
     void DisplayInventory() const;
 };

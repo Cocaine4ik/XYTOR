@@ -10,7 +10,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class XYTOR_API UAmmo : public UItem
 {
 	GENERATED_BODY()

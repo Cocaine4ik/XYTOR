@@ -19,6 +19,13 @@
 
 namespace ExtraTools
 {
+    template <typename Type>
+    struct Counter
+    {
+        Type Value;
+        int32 Count;
+    };
+
     template<typename StructureType>
     StructureType* GetStructureFromTable(const FString& Path, FName RowName)
     {
