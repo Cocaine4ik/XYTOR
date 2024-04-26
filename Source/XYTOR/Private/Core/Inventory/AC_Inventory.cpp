@@ -8,14 +8,8 @@
 UAC_Inventory::UAC_Inventory()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-    UE_LOG(LogTemp, Warning, TEXT("CONSTUCTOR WORKS"));
+    // UE_LOG(LogTemp, Warning, TEXT("CONSTUCTOR WORKS"));
     ActiveItems.SetNumZeroed(20);
-}
-
-void UAC_Inventory::BeginPlay()
-{
-    Super::BeginPlay();
-    UE_LOG(LogTemp, Warning, TEXT("BEGINPLAY WORKS"));
 }
 
 void UAC_Inventory::CallDelegateIfChanged(UItem* Item, int32 Count) const
@@ -188,11 +182,3 @@ const TArray<FCounterItem>& UAC_Inventory::GetItems() const
 {
     return Storage;
 }
-
-
-// Called every frame
-void UAC_Inventory::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-}
-

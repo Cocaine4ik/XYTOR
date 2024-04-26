@@ -16,12 +16,15 @@ class XYTOR_API APS_Inventory : public APS_Information
 {
 	GENERATED_BODY()
 protected:
+    /** Component for inventory managing. */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
     UAC_Inventory* InventoryComponent;
 
 public:
     APS_Inventory();
-    
+    /**
+     * @return pointer to InventoryComponent.
+     */
     UFUNCTION(BlueprintCallable)
     UAC_Inventory* GetInventory() const;
 };
