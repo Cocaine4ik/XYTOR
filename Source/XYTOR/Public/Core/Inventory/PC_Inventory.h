@@ -4,20 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "W_InventoryBase.h"
-#include "GameFramework/PlayerController.h"
+#include "Core/Energy/PC_Energy.h"
 #include "PC_Inventory.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class XYTOR_API APC_Inventory : public APlayerController
+class XYTOR_API APC_Inventory : public APC_Energy
 {
 	GENERATED_BODY()
 protected:
     UPROPERTY()
     UW_InventoryBase* InventoryWidget;
-    UPROPERTY(EditAnywhere, Category="Widgets")
+    UPROPERTY(EditDefaultsOnly, Category="Widgets")
     TSubclassOf<UW_InventoryBase> InventoryWidgetClass;
 
 public:

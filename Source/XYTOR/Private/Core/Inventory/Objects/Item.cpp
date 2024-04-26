@@ -30,7 +30,7 @@ bool UItem::Init(FName ItemName)
     if (Data)
     {
         ItemData = Data;
-        return true;
+        return AdditionalInit(ItemName);
     }
     return false;
 }
@@ -40,26 +40,32 @@ bool UItem::Init(FName ItemName, FS_Item* ItemStructure)
     if (!ItemStructure)
         return Init(ItemName);
 
-    FS_Item* Data = ItemStructure;
-    return true;
+    Name = ItemName;
+    ItemData = ItemStructure;
+    return AdditionalInit(ItemName);
 }
+//
+// UItem::UItem(FName ItemName)
+// {
+//     Init(ItemName);
+// }
+//
+// UItem::UItem(FName ItemName, FS_Item* ItemStructure)
+// {
+//     Init(ItemName, ItemStructure);
+// }
 
-UItem::UItem(FName ItemName)
-{
-    Init(ItemName);
-}
-
-UItem::UItem(FName ItemName, FS_Item* ItemStructure)
-{
-    Init(ItemName, ItemStructure);
-}
-
-UItem* UItem::MakeItem(FName ItemName)
+UItem* UItem::MakeItem(FName ItemName, UObject* Parent)
 {
     FS_Item* Data = ExtraTools::GetStructureFromTable<FS_Item>(
         "/Script/Engine.DataTable'/Game/XYTOR/DataTables/Inventory/DT_Items.DT_Items'", ItemName);
+
+    if (!Data)
+        return nullptr;
+
+    auto ItemClass = GetClass(Data->ItemType);
     
-    UItem* Item = NewObject<UItem>(nullptr, GetClass(Data->ItemType));
+    UItem* Item = NewObject<UItem>(Parent, ItemClass);
     if (Item->Init(ItemName, Data))
         return Item;
 

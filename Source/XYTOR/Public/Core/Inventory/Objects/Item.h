@@ -29,14 +29,14 @@ public:
     UFUNCTION(BlueprintCallable)
     bool Init(FName ItemName);
     bool Init(FName ItemName, FS_Item* ItemStructure);
-    
-    UItem(FName ItemName);
-    UItem(FName ItemName, FS_Item* ItemStructure);
-    
+    //
+    // UItem(FName ItemName);
+    // UItem(FName ItemName, FS_Item* ItemStructure);
+    //
     UItem() = default;
 
     UFUNCTION(BlueprintCallable)
-    static UItem* MakeItem(FName ItemName);
+    static UItem* MakeItem(FName ItemName, UObject* Parent);
     UFUNCTION(BlueprintCallable)
     static TSubclassOf<UItem> GetClass(EE_ItemType Type);
 

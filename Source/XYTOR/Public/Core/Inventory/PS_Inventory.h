@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AC_Inventory.h"
+#include "Core/Information/PS_Information.h"
 #include "GameFramework/PlayerState.h"
 #include "PS_Inventory.generated.h"
 
@@ -11,7 +12,7 @@
  * 
  */
 UCLASS()
-class XYTOR_API APS_Inventory : public APlayerState
+class XYTOR_API APS_Inventory : public APS_Information
 {
 	GENERATED_BODY()
 protected:

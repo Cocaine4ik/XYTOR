@@ -10,8 +10,7 @@ class UItem;
 
 //DECLARE_DYNAMIC_DELEGATE_TwoParams(FOnItemRemovedDelegate, UItem*, Item, int32, Count);
 DECLARE_DELEGATE_TwoParams(FOnItemRemovedDelegate, UItem*, int32);
-DECLARE_DELEGATE_TwoParams(FOnItemActivationChangeDelegate, UItem*, bool);
-
+DECLARE_DELEGATE_OneParam(FOnItemStatusChanged, UItem*);
 
 /**
  * 
@@ -22,10 +21,17 @@ class XYTOR_API UW_InventoryBase : public UW_NormalBase
 	GENERATED_BODY()
 public:
     FOnItemRemovedDelegate OnItemRemoved;
-    FOnItemActivationChangeDelegate OnItemActivate;
+    FOnItemStatusChanged OnItemActivated, OnItemDeactivated;
     
     UFUNCTION(BlueprintCallable)
     void UpdateItem(const UItem* Item, int32 Count);
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    void ActivateItem(UItem* Item);
+    
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    void DeactivateItem(UItem* Item);
+    
 protected:
     UFUNCTION(BlueprintCallable)
     void RemoveItemFromInventory(UItem* Item, int32 Count);

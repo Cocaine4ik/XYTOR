@@ -11,6 +11,14 @@ void UW_InventoryBase::UpdateItem(const UItem* Item, int32 Count)
         RemoveItem(Item, -Count);
 }
 
+void UW_InventoryBase::ActivateItem_Implementation(UItem* Item)
+{
+}
+
+void UW_InventoryBase::DeactivateItem_Implementation(UItem* Item)
+{
+}
+
 void UW_InventoryBase::RemoveItemFromInventory(UItem* Item, int32 Count)
 {
     OnItemRemoved.ExecuteIfBound(Item, Count);
@@ -18,7 +26,10 @@ void UW_InventoryBase::RemoveItemFromInventory(UItem* Item, int32 Count)
 
 void UW_InventoryBase::ActivateItemInInventory(UItem* Item, bool IsActivated)
 {
-    OnItemActivate.ExecuteIfBound(Item, IsActivated);
+    if (IsActivated)
+        OnItemActivated.ExecuteIfBound(Item);
+    else
+        OnItemDeactivated.ExecuteIfBound(Item);
 }
 
 

@@ -19,7 +19,6 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category="Widgets")
     TSubclassOf<UW_InformationBase> InformationWidgetClass;
     
-   // UW_InformationBase* InformationWidget = nullptr;
 public:
 
     virtual void BeginPlay() override;

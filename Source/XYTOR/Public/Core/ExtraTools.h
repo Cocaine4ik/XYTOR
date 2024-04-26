@@ -4,27 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
-// #include "UObject/NoExportTypes.h"
+#include "Inventory/Objects/Item.h"
 // #include "ExtraTools.generated.h"
 //
-// /**
-//  * 
-//  */
-// UCLASS()
-// class XYTOR_API UExtraTools : public UObject
-// {
-// 	GENERATED_BODY()
-// 	
-// };
+// #define DECLARE_COUNTER_STRUCT(VALUE_TYPE, STRUCT_NAME) \
+//     USTRUCT() \
+//     struct STRUCT_NAME \
+//     { \
+//         GENERATED_BODY()\
+//         UPROPERTY()\
+//         VALUE_TYPE Value;\
+//         int32 Count;\
+//     }
+//
+//
+// DECLARE_COUNTER_STRUCT(UItem*, FCounterItem);
 
 namespace ExtraTools
 {
-    template <typename Type>
-    struct Counter
-    {
-        Type Value;
-        int32 Count;
-    };
 
     template<typename StructureType>
     StructureType* GetStructureFromTable(const FString& Path, FName RowName)

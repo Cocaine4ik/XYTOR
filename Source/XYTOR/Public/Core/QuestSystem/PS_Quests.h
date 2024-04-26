@@ -4,9 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "E_SubquestType.h"
-#include "Core/Information/PS_Information.h"
+#include "Core/Inventory/PS_Inventory.h"
 #include "./Objects/Quest.h"
-#include "GameFramework/PlayerState.h"
 #include "PS_Quests.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestChanged, UQuest*, QuestObject);
@@ -15,7 +14,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestChanged, UQuest*, QuestObjec
  * 
  */
 UCLASS()
-class XYTOR_API APS_Quests : public APS_Information
+class XYTOR_API APS_Quests : public APS_Inventory
 {
 	GENERATED_BODY()
     UPROPERTY()
