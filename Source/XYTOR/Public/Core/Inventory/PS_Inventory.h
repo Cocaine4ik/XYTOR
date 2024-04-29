@@ -9,7 +9,7 @@
 #include "PS_Inventory.generated.h"
 
 /**
- * 
+ * Player state for inventory.
  */
 UCLASS()
 class XYTOR_API APS_Inventory : public APS_Information

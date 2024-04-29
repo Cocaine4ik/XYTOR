@@ -40,6 +40,12 @@ void APC_Interaction::Interact()
     if (HandlerComponent)
     {
         Cast<UAC_Interact>(HandlerComponent)->Interact(ObjectsToInteract[CurrentObjectIndex]);
+        return;
+    }
+    HandlerComponent = AddComponentByClass(IInteractable::Execute_GetHandlerClass(ObjectsToInteract[CurrentObjectIndex]), false, FTransform::Identity,false);
+    if (HandlerComponent)
+    {
+        Cast<UAC_Interact>(HandlerComponent)->Interact(ObjectsToInteract[CurrentObjectIndex]);
     }
 }
 
