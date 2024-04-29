@@ -35,7 +35,7 @@ public:
     UQuest() = default;
     UQuest(FName QuestName);
     bool IsCompleted() const;
-    bool Update(EE_SubquestType Type);
+    bool Update(EE_SubquestType Type, const APlayerState* PlayerState);
 
     const FText& GetTitle() const;
     const FText& GetDescription() const;

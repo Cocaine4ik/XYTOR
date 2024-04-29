@@ -14,11 +14,11 @@ void APS_Quests::FinishQuest(uint8 Index)
 void APS_Quests::UpdateQuests(EE_SubquestType Type)
 {
     for (uint8 i=0; i<AvailableQuests.Num(); i++)
-        if (AvailableQuests[i]->Update(Type))
+        if (AvailableQuests[i]->Update(Type, this))
         {
             OnQuestChanged.Broadcast(AvailableQuests[i]);
             if (AvailableQuests[i]->IsCompleted())
-                FinishQuest(i--); // Increment is only for TArray
+                FinishQuest(i--); // Decrement is only for TArray
         }
 }
 
@@ -42,7 +42,13 @@ void APS_Quests::TokensChanged()
     UpdateQuests(EE_SubquestType::Token);
 }
 
-void APS_Quests::ItemsChanged()
+void APS_Quests::ItemsChanged(UItem* Item, int32 Count)
 {
     UpdateQuests(EE_SubquestType::Item);
+}
+
+void APS_Quests::BeginPlay()
+{
+    Super::BeginPlay();
+    GetInventory()->OnInventoryChanged.AddUniqueDynamic(this, &APS_Quests::ItemsChanged);
 }

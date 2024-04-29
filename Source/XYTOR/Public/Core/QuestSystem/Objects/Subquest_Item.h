@@ -19,7 +19,7 @@ private:
     TMap<FName, uint8> RequiredItems;
 
 protected:
-    virtual bool Update() override;
+    virtual bool Update(const APlayerState* PlayerState) override;
     virtual bool InitByName(FName SubquestName) override;
     
 };

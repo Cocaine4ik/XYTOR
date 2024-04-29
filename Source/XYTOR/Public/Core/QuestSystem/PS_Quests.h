@@ -16,7 +16,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestChanged, UQuest*, QuestObjec
 UCLASS()
 class XYTOR_API APS_Quests : public APS_Inventory
 {
-	GENERATED_BODY()
+private:
+    GENERATED_BODY()
     UPROPERTY()
     TArray<UQuest*> AvailableQuests;
     UPROPERTY()
@@ -32,5 +33,9 @@ public:
     void AddQuest(FName QuestName);
 
     void TokensChanged();
-    void ItemsChanged();
+    UFUNCTION()
+    void ItemsChanged(UItem* Item, int32 Count);
+
+    virtual void BeginPlay() override;
+
 };

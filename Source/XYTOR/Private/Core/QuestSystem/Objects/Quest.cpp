@@ -32,14 +32,13 @@ bool UQuest::IsCompleted() const
     return CurrentSubquest>=Subquests.Num();
 }
 
-bool UQuest::Update(EE_SubquestType Type)
+bool UQuest::Update(EE_SubquestType Type, const APlayerState* PlayerState)
 {
-    if (Subquests[CurrentSubquest]->Update(Type))
+    if (Subquests[CurrentSubquest]->Update(Type, PlayerState))
     {
         ++CurrentSubquest;
         return true;
     }
-
     return false;
 }
 

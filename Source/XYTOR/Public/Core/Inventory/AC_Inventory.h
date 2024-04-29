@@ -7,7 +7,7 @@
 #include "Core/Inventory/Objects/Item.h"
 #include "AC_Inventory.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryChanged, const UItem*, UpdatedItem, int32, Count);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInventoryChanged, UItem*, UpdatedItem, int32, Count);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FItemShareDelegate, UItem*, Item);
 
 /**

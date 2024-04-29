@@ -33,7 +33,7 @@ public:
      * @param Count Change. Negative after item removing.
      */
     UFUNCTION(BlueprintCallable)
-    void UpdateItem(const UItem* Item, int32 Count);
+    void UpdateItem(UItem* Item, int32 Count);
 
     /**
      * Display activating of item in inventory.

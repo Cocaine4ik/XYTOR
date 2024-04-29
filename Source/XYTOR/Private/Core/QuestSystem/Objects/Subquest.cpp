@@ -22,10 +22,10 @@ bool USubquest::IsComplete() const
     return bComplete;
 }
 
-bool USubquest::Update(EE_SubquestType Type)
+bool USubquest::Update(EE_SubquestType Type, const APlayerState* PlayerState)
 {
     if (Data.Type == Type)
-        return Update();
+        return Update(PlayerState);
     return false;
 }
 

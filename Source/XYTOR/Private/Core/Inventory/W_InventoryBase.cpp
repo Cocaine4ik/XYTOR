@@ -3,7 +3,7 @@
 
 #include "Core/Inventory/W_InventoryBase.h"
 
-void UW_InventoryBase::UpdateItem(const UItem* Item, int32 Count)
+void UW_InventoryBase::UpdateItem(UItem* Item, int32 Count)
 {
     if (Count>0)
         AddItem(Item, Count);

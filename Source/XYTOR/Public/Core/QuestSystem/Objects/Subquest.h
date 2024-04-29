@@ -23,9 +23,9 @@ protected:
 public:
     bool Init(const FS_Subquest& SubquestInfo);
     bool IsComplete() const;
-    bool Update(EE_SubquestType Type);
+    bool Update(EE_SubquestType Type, const APlayerState* PlayerState);
     static USubquest* MakeSubquest(const FS_Subquest& Data, UObject* Parent);
 protected:
-    virtual bool Update() PURE_VIRTUAL(USubquest::Update, return false;);
+    virtual bool Update(const APlayerState* PlayerState) PURE_VIRTUAL(USubquest::Update, return false;);
     virtual bool InitByName(FName SubquestName) PURE_VIRTUAL(USubquest::InitByName, return false;);
 };

@@ -19,7 +19,7 @@ class XYTOR_API USubquest_Token : public USubquest
     
 protected:
     virtual bool InitByName(FName SubquestName) override;
-    virtual bool Update() override;
+    virtual bool Update(const APlayerState* PlayerState) override;
 
     
 

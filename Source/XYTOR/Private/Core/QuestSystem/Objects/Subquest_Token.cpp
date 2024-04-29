@@ -27,7 +27,7 @@ bool USubquest_Token::InitByName(FName SubquestName)
     return true;
 }
 
-bool USubquest_Token::Update()
+bool USubquest_Token::Update(const APlayerState* PlayerState)
 {
     return false;
 }
