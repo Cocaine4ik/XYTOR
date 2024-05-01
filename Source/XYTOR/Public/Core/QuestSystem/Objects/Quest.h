@@ -34,6 +34,7 @@ public:
     
     UQuest() = default;
     UQuest(FName QuestName);
+    UFUNCTION(BlueprintPure)
     bool IsCompleted() const;
     bool Update(EE_SubquestType Type, const APlayerState* PlayerState);
 

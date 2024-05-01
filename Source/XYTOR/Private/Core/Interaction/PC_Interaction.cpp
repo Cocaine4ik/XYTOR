@@ -36,7 +36,8 @@ void APC_Interaction::BeginPlay()
 void APC_Interaction::Interact()
 {
     if (CurrentObjectIndex<0) return;
-    UActorComponent* HandlerComponent = GetComponentByClass(IInteractable::Execute_GetHandlerClass(ObjectsToInteract[CurrentObjectIndex]));
+    
+    UActorComponent* HandlerComponent = this->GetComponentByClass(IInteractable::Execute_GetHandlerClass(ObjectsToInteract[CurrentObjectIndex]));
     if (HandlerComponent)
     {
         Cast<UAC_Interact>(HandlerComponent)->Interact(ObjectsToInteract[CurrentObjectIndex]);

@@ -11,6 +11,7 @@ bool UQuest::Init(FName QuestName)
     const FString QuestTablePath = "/Script/Engine.DataTable'/Game/XYTOR/DataTables/QuestSystem/DT_Quests.DT_Quests'";
     if (const FS_Quest* QuestData = ExtraTools::GetStructureFromTable<FS_Quest>(QuestTablePath, QuestName))
     {
+        NameInTable = QuestName;
         Title = QuestData->Title;
         Description = QuestData->Description;
         for (auto SubquestInfo: QuestData->Subquests)

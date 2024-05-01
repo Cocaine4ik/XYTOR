@@ -24,8 +24,11 @@ void APS_Quests::UpdateQuests(EE_SubquestType Type)
 
 void APS_Quests::AddQuest(FName QuestName)
 {
-    UQuest* Quest = NewObject<UQuest>(UQuest::StaticClass());
-    if (Quest)
+    for (const UQuest* Quest : AvailableQuests)
+        if (Quest->GetNameInTable() == QuestName)
+            return;
+
+    if (UQuest* Quest = NewObject<UQuest>(UQuest::StaticClass()))
     {
         Quest->Init(QuestName);
         AvailableQuests.Push(Quest);

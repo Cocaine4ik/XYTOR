@@ -17,9 +17,9 @@ bool USubquest_Item::Update(const APlayerState* PlayerState)
     
     for (auto &Item: RequiredItems)
         if (!Inventory->Contains(Item.Get<0>(), Item.Get<1>()))
-            return false;
+            return true;
 
-    return true;    
+    return false;    
 }
 
 bool USubquest_Item::InitByName(FName SubquestName)
