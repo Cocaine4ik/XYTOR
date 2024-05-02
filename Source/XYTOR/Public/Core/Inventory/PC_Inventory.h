@@ -14,6 +14,9 @@ UCLASS()
 class XYTOR_API APC_Inventory : public APC_Energy
 {
 	GENERATED_BODY()
+
+public:
+    
 protected:
     UPROPERTY()
     UW_InventoryBase* InventoryWidget;

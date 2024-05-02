@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
 #include "IInteractable.generated.h"
 
 class UAC_Interact;
@@ -20,10 +19,7 @@ class IInteractable
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-    TSubclassOf<UAC_Interact> GetHandlerClass() const;
+    TArray<UAC_Interact*> GetHandlers() const;
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
     FText GetInteractingText() const;
 };
-/**
- * 
- */

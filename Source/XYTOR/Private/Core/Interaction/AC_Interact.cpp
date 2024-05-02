@@ -32,7 +32,9 @@ void UAC_Interact::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	// ...
 }
 
-void UAC_Interact::Interact_Implementation(AActor* Object)
+void UAC_Interact::Interact(AActor* InteractingActor)
 {
 }
+
+
 

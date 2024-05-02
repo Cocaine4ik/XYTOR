@@ -13,7 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FItemShareDelegate, UItem*, Item);
 /**
  * Counter of items. Created to easy storing of count of items.
  */
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FCounterItem
 {
     GENERATED_BODY()
@@ -40,11 +40,11 @@ private:
 
 protected:
     /** Array of all items */
-    UPROPERTY()
+    UPROPERTY(VisibleAnywhere, Category = "Inventory")
     TArray<FCounterItem> Storage;
 
     /** Array of activated items */
-    UPROPERTY()
+    UPROPERTY(VisibleAnywhere, Category = "Inventory")
     TArray<UItem*> ActiveItems; 
 
     /**
