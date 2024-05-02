@@ -3,19 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AC_Dialogue.h"
-#include "Components/ActorComponent.h"
+#include "AC_ProceedDialogue.h"
+#include "DialogueGraph/DialogueGraph.h"
 #include "AC_DialogueHandler.generated.h"
 
+class APS_Tokens;
 class UNPCDialogueGraphNode;
 class UPlayerDialogueGraphNode;
+struct FGameplayTagContainer;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBeginDialogueSignature, const UNPCDialogueGraphNode*, NPCNode, const TArray<UPlayerDialogueGraphNode*>, PlayerDialogueNodes);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnProceedDialogueSignature, const UPlayerDialogueGraphNode*, Node);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnProceedDialogueSignature, const UNPCDialogueGraphNode*, NPCNode, const TArray<UPlayerDialogueGraphNode*>, PlayerDialogueNodes);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEndDialogueSignature);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class XYTOR_API UAC_DialogueHandler : public UAC_Dialogue
+class XYTOR_API UAC_DialogueHandler : public UAC_ProceedDialogue
 {
     GENERATED_BODY()
 
@@ -33,27 +35,27 @@ public:
     FOnEndDialogueSignature OnEndDialogueDelegate;
 
 protected:
-    UPROPERTY(BlueprintReadOnly,Category = "Dialogues")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogues System")
+    UDialogueGraph* DialogueGraph;
+    
+    UPROPERTY(BlueprintReadOnly,Category = "Dialogues System")
     UNPCDialogueGraphNode* CurrentNPCNode;
 
-    UPROPERTY(BlueprintReadOnly, Category = "Dialogues")
+    UPROPERTY(BlueprintReadOnly, Category = "Dialogues System")
     TArray<UPlayerDialogueGraphNode*> CurrentPlayerDialogueNodes;
-    
-    // Called when the game starts
-    virtual void BeginPlay() override;
-    
+
+    bool InitializeTokens();
+
 public:
     UFUNCTION(BlueprintCallable)
-    void BeginDialogue();
-    
-    UFUNCTION(BlueprintCallable)
-    void OnProceedDialogue(const UPlayerDialogueGraphNode* Node);
+    void BeginDialogue(UDialogueGraph* Dialogue);
+
+    virtual void ProceedDialogue(const UPlayerDialogueGraphNode* Node) override;
     
     UFUNCTION(BlueprintCallable)
     void EndDialogue();
 
-    bool IsProceed() const { return bIsProceed; }
-    
 private:
-    bool bIsProceed = false;
+    UPROPERTY()
+    APS_Tokens* Tokens;
 };

@@ -17,7 +17,7 @@ UDialogueGraph::UDialogueGraph()
     Name = "DialogueGraph";
 }
 
-void UDialogueGraph::InitializeValidationTags(const FGameplayTagContainer& GamePlayTags)
+void UDialogueGraph::UpdateValidationTags(const FGameplayTagContainer& GamePlayTags)
 {
     UE_LOG(LogTemp, Warning, TEXT("Initalize"));
     ValidationTags = GamePlayTags;
@@ -62,6 +62,12 @@ TArray<UPlayerDialogueGraphNode*> UDialogueGraph::GetPlayerDialogueNodes(const U
             PlayerDialogueGraphNodes.Add(PlayerDialogueNode);
         }
     }
+    // Sort by order
+    PlayerDialogueGraphNodes.Sort([](const UPlayerDialogueGraphNode& a, const UPlayerDialogueGraphNode& b)
+    {
+        return a.Order < b.Order;
+    });
+    
     return PlayerDialogueGraphNodes;
 }
 

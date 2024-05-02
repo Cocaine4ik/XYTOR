@@ -1,26 +1,38 @@
 // XYTOR. All Rights Reserved.
 
 
-#include "Core/Dialogues/Dev/PC_Dialogues.h"
+#include "Core/Dialogues/PC_Dialogues.h"
 
 #include "AC_DialogueHandler.h"
+#include "AC_ProceedDialogue.h"
 #include "Core/Dialogues/W_DialogueWindow.h"
 #include "Core/WidgetManager/HUD_WidgetManager.h"
 #include "DialogueGraph/NPCDialogueGraphNode.h"
 #include "DialogueGraph/PlayerDialogueGraphNode.h"
-#include "GameFramework/Character.h"
+#include "GameplayTagContainer.h"
+
+APC_Dialogues::APC_Dialogues()
+{
+    DialogueHandler = CreateDefaultSubobject<UAC_DialogueHandler>(TEXT("DialogueHandler"));
+    DialogueHandler->RegisterComponent();
+
+}
 
 void APC_Dialogues::BeginPlay()
 {
     Super::BeginPlay();
-    
-    const auto DialogueHandler = GetDialogueHandler();
-    if (!DialogueHandler) return;
-    
-    DialogueHandler->OnBeginDialogueDelegate.AddDynamic(this, &APC_Dialogues::OnBeginDialogue);
-    DialogueHandler->OnEndDialogueDelegate.AddUniqueDynamic(this, &APC_Dialogues::OnEndDialogue);
 
-    InitializeWidgets();
+    check(DialogueHandler)
+    
+    if(InitializeWidget())
+    {
+        DialogueWindowWidget->InitializeWidget(DialogueHandler);
+        
+        DialogueHandler->OnBeginDialogueDelegate.AddDynamic(this, &APC_Dialogues::OnBeginDialogue);
+        DialogueHandler->OnBeginDialogueDelegate.AddDynamic(DialogueWindowWidget, &UW_DialogueWindow::OnUpdateDialogue);
+        DialogueHandler->OnProceedDialogueDelegate.AddDynamic(DialogueWindowWidget, &UW_DialogueWindow::OnUpdateDialogue);
+        DialogueHandler->OnEndDialogueDelegate.AddUniqueDynamic(this, &APC_Dialogues::OnEndDialogue);
+    }
 }
 
 void APC_Dialogues::OnBeginDialogue(const UNPCDialogueGraphNode* NPCNode, const TArray<UPlayerDialogueGraphNode*> PlayerDialogueNodes)
@@ -34,7 +46,7 @@ void APC_Dialogues::OnBeginDialogue(const UNPCDialogueGraphNode* NPCNode, const 
     }
     
     // if widget created and exists toggle it
-    if (DialogueWindowWidget && !GetDialogueHandler()->IsProceed())
+    if (DialogueWindowWidget)
     {
         HUD->ToggleNormalWidgetByClass(DialogueWindowWidgetClass);
     }
@@ -54,7 +66,7 @@ void APC_Dialogues::OnEndDialogue()
     HUD->HideCurrentNormalWidget();
 }
 
-bool APC_Dialogues::InitializeWidgets()
+bool APC_Dialogues::InitializeWidget()
 {
     if(!DialogueWindowWidgetClass)
     {
@@ -80,14 +92,6 @@ bool APC_Dialogues::InitializeWidgets()
     {
         DialogueWindowWidget = Cast<UW_DialogueWindow>(HUD->AddWidgetByClass(DialogueWindowWidgetClass));
     }
-
-    return true;
-}
-
-UAC_DialogueHandler* APC_Dialogues::GetDialogueHandler() const
-{
-    if (!GetCharacter()) return nullptr;
     
-    const auto DialogueHandler = GetCharacter()->GetComponentByClass<UAC_DialogueHandler>();
-    return DialogueHandler;
+    return true;
 }

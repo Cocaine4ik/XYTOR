@@ -4,18 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "XYTOR/XYTORPlayerController.h"
+#include "Core/Inventory/PC_Inventory.h"
 #include "PC_Dialogues.generated.h"
 
 class UAC_DialogueHandler;
 class UW_DialogueWindow;
 
 UCLASS()
-class XYTOR_API APC_Dialogues : public AXYTORPlayerController
+class XYTOR_API APC_Dialogues : public APC_Inventory
 {
     GENERATED_BODY()
 
+public:
+    APC_Dialogues();
+    
 protected:
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dialogues System")
+    UAC_DialogueHandler* DialogueHandler;
+    
     UPROPERTY(EditDefaultsOnly, Category = "Widgets")
     TSubclassOf<UW_DialogueWindow> DialogueWindowWidgetClass;
 
@@ -31,8 +37,5 @@ private:
     UPROPERTY()
     UW_DialogueWindow* DialogueWindowWidget = nullptr;
 
-    bool InitializeWidgets();
-
-public:
-    UAC_DialogueHandler* GetDialogueHandler() const;
+    bool InitializeWidget();
 };

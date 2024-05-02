@@ -32,4 +32,10 @@ struct FDialogueResultData
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Results")
     FGameplayTagContainer ResultTags;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Items")
+    TMap<FName, int32> Items;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Quest")
+    FName Quest;
 };
