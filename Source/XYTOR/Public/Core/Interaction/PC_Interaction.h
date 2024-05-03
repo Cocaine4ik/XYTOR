@@ -9,6 +9,7 @@
 #include "GameFramework/PlayerController.h"
 #include "PC_Interaction.generated.h"
 
+class UAC_Interact;
 /**
  * 
  */
@@ -30,8 +31,10 @@ protected:
     UW_InteractionBase* InteractionBase;
 
     virtual void BeginPlay() override;
+    
     UFUNCTION(BlueprintCallable)
     void Interact();
+    
 public:
     virtual void Tick(float DeltaSeconds) override;
     UFUNCTION(BlueprintCallable, Category="Interacting System")

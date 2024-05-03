@@ -3,9 +3,10 @@
 
 #include "Core/Dialogues/W_DialogueLine.h"
 
+#include "AC_DialogueHandler.h"
 #include "Components/Image.h"
-#include "Components/MultiLineEditableText.h"
 #include "Components/TextBlock.h"
+#include "Core/Tokens/PS_Tokens.h"
 
 void UW_DialogueLine::NativeOnInitialized()
 {
@@ -15,8 +16,13 @@ void UW_DialogueLine::NativeOnInitialized()
 void UW_DialogueLine::ProceedDialogue()
 {
     if (DialogueWindow && PlayerNode)
-    {
-        DialogueWindow->GetDialogueHandler()->OnProceedDialogueDelegate.Broadcast(PlayerNode);
+    {            
+
+        if (const auto ProceedDialogue = DialogueWindow->ProceedDialogue)
+        {
+
+            ProceedDialogue->ProceedDialogue(PlayerNode);
+        }
     }
 }
 

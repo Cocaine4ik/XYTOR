@@ -2,33 +2,25 @@
 
 
 #include "Core/Dialogues/W_DialogueWindow.h"
+#include "Core/Dialogues/AC_ProceedDialogue.h"
 #include "DialogueGraph/PlayerDialogueGraphNode.h"
 #include "DialogueGraph/NPCDialogueGraphNode.h"
-#include "AC_DialogueHandler.h"
 #include "W_DialogueLine.h"
 #include "Components/VerticalBox.h"
 #include "Components/Image.h"
-#include "Components/MultiLineEditableText.h"
 #include "Components/TextBlock.h"
-#include "GameFramework/Character.h"
 
 void UW_DialogueWindow::NativeOnInitialized()
 {
     Super::NativeOnInitialized();
+}
 
-    const auto Controller = GetOwningPlayer();
-    if (!Controller) return;
+void UW_DialogueWindow::InitializeWidget(UAC_ProceedDialogue* DialogueHandler)
+{
+    ProceedDialogue = DialogueHandler;
+}
 
-    const auto Character = Controller->GetCharacter();
-    if (!Character) return;
-
-    DialogueHandler = Character->GetComponentByClass<UAC_DialogueHandler>();
-    if (!DialogueHandler) return;
-    
-    DialogueHandler->OnBeginDialogueDelegate.AddDynamic(this, &UW_DialogueWindow::OnBeginDialogue);
-} 
-
-void UW_DialogueWindow::OnBeginDialogue(const UNPCDialogueGraphNode* NPCNode, const TArray<UPlayerDialogueGraphNode*> PlayerDialogueNodes)
+void UW_DialogueWindow::OnUpdateDialogue(const UNPCDialogueGraphNode* NPCNode, const TArray<UPlayerDialogueGraphNode*> PlayerDialogueNodes)
 {
     if (!NPCNode || !PlayerDialogueLineContainer || !NPCDialogueIcon || !NPCDialogueText) return;
 
@@ -61,14 +53,6 @@ void UW_DialogueWindow::OnBeginDialogue(const UNPCDialogueGraphNode* NPCNode, co
         PlayerDialogueLineWidget->SetDialogueText(PlayerText);
 
         PlayerDialogueLineContainer->AddChild(PlayerDialogueLineWidget);
-    }
-}
-
-void UW_DialogueWindow::OnProceedDialogue(const UPlayerDialogueGraphNode* Node)
-{
-    if (Node)
-    {
-        DialogueHandler->OnProceedDialogueDelegate.Broadcast(Node);
     }
 }
 
