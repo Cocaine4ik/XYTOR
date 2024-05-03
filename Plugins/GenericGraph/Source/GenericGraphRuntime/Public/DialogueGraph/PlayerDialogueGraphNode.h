@@ -13,6 +13,9 @@ class GENERICGRAPHRUNTIME_API UPlayerDialogueGraphNode : public UDialogueGraphNo
 public:
     UPlayerDialogueGraphNode();
 
+    UPROPERTY(EditAnywhere,Category = "GenericGraphNode")
+    int32 Order;
+    
 protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "DialogueGraph")
     FDialogueResultData ResultData;

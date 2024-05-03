@@ -7,19 +7,23 @@
 #include "AC_Interact.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable )
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable)
 class XYTOR_API UAC_Interact : public UActorComponent
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	UAC_Interact();
+    UAC_Interact();
 
 protected:
-	virtual void BeginPlay() override;
+    virtual void BeginPlay() override;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interacting System")
+    FText InteractingText;
+    
 public:
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-    UFUNCTION(BlueprintNativeEvent)
-    void Interact(AActor* Object);
+    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+    UFUNCTION(BlueprintCallable)
+    virtual void Interact(AActor* InteractingActor);
 };

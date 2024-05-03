@@ -28,11 +28,11 @@ private:
 
 public:
     /**
-     * Initialize tags before start working with dialogue graph
+     * Update tags before start working with dialogue graph
      * @param GamePlayTags 
      */
     UFUNCTION(BlueprintCallable)
-    void InitializeValidationTags(const FGameplayTagContainer& GamePlayTags);
+    void UpdateValidationTags(const FGameplayTagContainer& GamePlayTags);
     
     /**
      * Return start NPC Dialogue Node based on provided Tags

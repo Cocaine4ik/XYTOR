@@ -10,6 +10,7 @@ class AHUD_WidgetManager;
 void APC_Quests::BeginPlay()
 {
     Super::BeginPlay();
+    
     INIT_WIDGET_IN_BEGIN_PLAY(PC_Quests, UW_QuestListBase, QuestListWidgetClass, QuestListWidget);
     if (APS_Quests* PS_Quests = Cast<APS_Quests>(GetPlayerState<APS_Quests>()))
     {

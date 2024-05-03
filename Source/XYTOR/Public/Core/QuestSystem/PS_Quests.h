@@ -16,11 +16,13 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestChanged, UQuest*, QuestObjec
 UCLASS()
 class XYTOR_API APS_Quests : public APS_Inventory
 {
-private:
     GENERATED_BODY()
-    UPROPERTY()
+
+protected:
+    UPROPERTY(VisibleAnywhere, Category = "Quest System")
     TArray<UQuest*> AvailableQuests;
-    UPROPERTY()
+    
+    UPROPERTY(VisibleAnywhere, Category = "Quest System")
     TArray<UQuest*> CompletedQuests;
 
     void FinishQuest(uint8 Index);

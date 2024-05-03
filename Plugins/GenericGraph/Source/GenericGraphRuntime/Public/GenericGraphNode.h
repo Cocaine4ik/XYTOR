@@ -23,8 +23,8 @@ class GENERICGRAPHRUNTIME_API UGenericGraphNode : public UObject
 public:
 	UGenericGraphNode();
 	virtual ~UGenericGraphNode();
-
-    UPROPERTY(VisibleDefaultsOnly, Category = "GenericGraphNode")
+    
+    UPROPERTY(BlueprintReadOnly, Category = "GenericGraphNode")
     int32 ID;
     
 	UPROPERTY(VisibleDefaultsOnly, Category = "GenericGraphNode")

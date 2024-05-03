@@ -1,6 +1,8 @@
 // XYTOR. All Rights Reserved.
 
 #include "Core/Dialogues/AC_DialogueHandler.h"
+#include "PS_Tokens.h"
+#include "DialogueGraph/PlayerDialogueGraphNode.h"
 
 // Sets default values for this component's properties
 UAC_DialogueHandler::UAC_DialogueHandler()
@@ -8,50 +10,56 @@ UAC_DialogueHandler::UAC_DialogueHandler()
     // Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
     // off to improve performance if you don't need them.
     PrimaryComponentTick.bCanEverTick = true;
-
     // ...
 }
 
-
-// Called when the game starts
-void UAC_DialogueHandler::BeginPlay()
+bool UAC_DialogueHandler::InitializeTokens()
 {
-    Super::BeginPlay();
+    if (Tokens) return true;
+    
+    if (const auto Controller = Cast<AController>(GetOwner()))
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("BeginDialogue")));
 
-    OnProceedDialogueDelegate.AddUniqueDynamic(this, &UAC_DialogueHandler::OnProceedDialogue);
+        Tokens = Controller->GetPlayerState<APS_Tokens>();
+
+        if (Tokens) return true;
+        
+    }
+    return false;
 }
 
-void UAC_DialogueHandler::BeginDialogue()
+void UAC_DialogueHandler::BeginDialogue(UDialogueGraph* Dialogue)
 {
-    if (!DialogueGraph)
+    DialogueGraph = Dialogue;
+
+    if (!DialogueGraph || !InitializeTokens())
     {
         return;
     }
 
-    // DialogueGraph->InitializeValidationTags();
+    DialogueGraph->UpdateValidationTags(Tokens->GetTokens());
+    
     CurrentNPCNode = DialogueGraph->GetStartDialogueNode();
 
     CurrentPlayerDialogueNodes = DialogueGraph->GetPlayerDialogueNodes(CurrentNPCNode);
 
     OnBeginDialogueDelegate.Broadcast(CurrentNPCNode, CurrentPlayerDialogueNodes);
 
-    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("BeginDialogue")));
 }
 
-void UAC_DialogueHandler::OnProceedDialogue(const UPlayerDialogueGraphNode* Node)
+void UAC_DialogueHandler::ProceedDialogue(const UPlayerDialogueGraphNode* Node)
 {
-    bIsProceed = true;
+    if (!DialogueGraph || !Node || !Tokens)
+    {
+        return;
+    }
     
-    if (!DialogueGraph)
-    {
-        return;
-    }
-
-    if (!Node)
-    {
-        return;
-    }
     CurrentNPCNode = nullptr;
+
+    Tokens->UpdateTokens(Node->GetResultData().ResultTags);
+    DialogueGraph->UpdateValidationTags(Tokens->GetTokens());
+    
     CurrentNPCNode = DialogueGraph->GetNPCDialogueNode(Node);
 
     if (CurrentNPCNode)
@@ -59,7 +67,7 @@ void UAC_DialogueHandler::OnProceedDialogue(const UPlayerDialogueGraphNode* Node
         CurrentPlayerDialogueNodes.Empty();
         CurrentPlayerDialogueNodes = DialogueGraph->GetPlayerDialogueNodes(CurrentNPCNode);
 
-        OnBeginDialogueDelegate.Broadcast(CurrentNPCNode, CurrentPlayerDialogueNodes);
+        OnProceedDialogueDelegate.Broadcast(CurrentNPCNode, CurrentPlayerDialogueNodes);
     }
 
     if (!CurrentNPCNode)
@@ -75,5 +83,6 @@ void UAC_DialogueHandler::EndDialogue()
     GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("EndDialogue")));
 
     DialogueGraph = nullptr;
-    bIsProceed = false;
 }
+
+

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/Inventory/PC_Inventory.h"
+#include "PC_Dialogues.h"
 #include "GameFramework/PlayerController.h"
 #include "Widgets/W_QuestListBase.h"
 #include "Core/WidgetManager/HUD_WidgetManager.h"
@@ -13,7 +13,7 @@
  * 
  */
 UCLASS()
-class XYTOR_API APC_Quests : public APC_Inventory
+class XYTOR_API APC_Quests : public APC_Dialogues
 {
     GENERATED_BODY()
 protected:

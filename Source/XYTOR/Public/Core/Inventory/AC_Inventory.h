@@ -36,11 +36,11 @@ private:
 
 protected:
     /** Array of all items */
-    UPROPERTY()
+    UPROPERTY(VisibleAnywhere, Category = "Inventory")
     TArray<FCounterItem> Storage;
 
     /** Array of activated items */
-    UPROPERTY()
+    UPROPERTY(VisibleAnywhere, Category = "Inventory")
     TArray<UItem*> ActiveItems; 
 
     /**
