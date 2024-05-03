@@ -16,15 +16,18 @@ struct FS_Item : public FTableRowBase
 {
     GENERATED_USTRUCT_BODY()
     
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Title")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="S_Item")
     FText Title;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ToolTip")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="S_Item")
     FText ToolTip;
     
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ItemType")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="S_Item")
     EE_ItemType ItemType;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ItemType")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="S_Item")
     UTexture2D* Icon;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="S_Item")
+    UStaticMesh* Mesh;
 };

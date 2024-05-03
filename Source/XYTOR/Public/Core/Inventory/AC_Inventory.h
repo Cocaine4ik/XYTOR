@@ -13,7 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FItemShareDelegate, UItem*, Item);
 /**
  * Counter of items. Created to easy storing of count of items.
  */
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FCounterItem
 {
     GENERATED_BODY()
@@ -28,11 +28,7 @@ struct FCounterItem
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class XYTOR_API UAC_Inventory : public UActorComponent
 {
-public:
-
-private:
     GENERATED_BODY()
-
 private:
     void CallDelegateIfChanged(UItem* Item, int32 Count) const;
     UItem*& GetActiveItemSlotByType(EE_ItemType ItemType);
@@ -100,29 +96,6 @@ public:
     UFUNCTION(BlueprintCallable)
     uint8 AddItem(FName ItemName, uint8 Count);
     /**
-     * Removes items from the storage.
-     * @param ItemName    Name of item to remove.
-     * @param Count    Quantity to remove.
-     * @return quantity of successfully removed items.
-     */
-    UFUNCTION(BlueprintCallable)
-    uint8 RemoveItem(FName ItemName, uint8 Count);
-    /**
-     * Check if there are enough items in the storage.
-     * @param ItemName    Name of item to check.
-     * @param Count    Required quantity.
-     * @return true if there are enough such items in the Storage.
-     */
-    UFUNCTION(BlueprintCallable)
-    bool Contains(FName ItemName, uint8 Count) const;
-    /**
-     * @param ItemName    Name of item to count.
-     * @return quantity of such items in the storage.
-     */
-    UFUNCTION(BlueprintCallable)
-    int32 GetCountOfItem(FName ItemName) const;
-
-    /**
      * Adds items in the storage by pointer to item.
      * This method just use the ItemName from the item.
      * @param Item    Pointer to item to add.
@@ -132,18 +105,41 @@ public:
     UFUNCTION(BlueprintCallable)
     void AddItemByPointer(UItem* Item, int32 Count);
     /**
-     * Removes items from the storage by pointer to item.
-     * This method just use the ItemName from the item.
-     * @param Item    Pointer to item to remove.
+     * Removes items from the storage.
+     * @param ItemName    Name of item to remove.
      * @param Count    Quantity to remove.
      * @return quantity of successfully removed items.
      */
     UFUNCTION(BlueprintCallable)
+    uint8 RemoveItem(FName ItemName, uint8 Count);
+    /**
+    * Removes items from the storage by pointer to item.
+    * This method just use the ItemName from the item.
+    * @param Item    Pointer to item to remove.
+    * @param Count    Quantity to remove.
+    * @return quantity of successfully removed items.
+    */
+    UFUNCTION(BlueprintCallable)
     void RemoveItemByPointer(UItem* Item, int32 Count);
 
     /**
+     * Check if there are enough items in the storage.
+     * @param ItemName    Name of item to check.
+     * @param Count    Required quantity.
+     * @return true if there are enough such items in the Storage.
+     */
+    UFUNCTION(BlueprintPure)
+    bool Contains(FName ItemName, uint8 Count) const;
+    /**
+     * @param ItemName    Name of item to count.
+     * @return quantity of such items in the storage.
+     */
+    UFUNCTION(BlueprintPure)
+    int32 GetCountOfItem(FName ItemName) const;
+    /**
      * @return array of all pairs of Items and their quantities.
      */
+    UFUNCTION(BlueprintPure)
     const TArray<FCounterItem>& GetItems() const;
 
 public:
