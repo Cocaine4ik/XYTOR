@@ -36,14 +36,8 @@ void APC_Interaction::BeginPlay()
 
 void APC_Interaction::Interact()
 {
-    if (CurrentObjectIndex<0) return;
+    if (CurrentObjectIndex<0 || CurrentObjectIndex>=ObjectsToInteract.Num()) return;
     
-    UActorComponent* HandlerComponent = this->GetComponentByClass(IInteractable::Execute_GetHandlerClass(ObjectsToInteract[CurrentObjectIndex]));
-    if (HandlerComponent)
-    {
-        return; // Ensure the index is valid to prevent accessing out of bounds
-    }
-
     // Check for null actor
     const auto* CurrentActor = ObjectsToInteract[CurrentObjectIndex];
     if (!CurrentActor) return;

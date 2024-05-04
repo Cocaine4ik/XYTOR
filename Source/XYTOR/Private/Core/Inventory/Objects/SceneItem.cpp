@@ -9,13 +9,13 @@
 ASceneItem::ASceneItem()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-    if (const FS_Item* Data = ExtraTools::GetStructureFromTable<FS_Item>("/Script/Engine.DataTable'/Game/XYTOR/DataTables/Inventory/DT_Items.DT_Items'", ItemName))
-    {
-        UStaticMeshComponent* MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-        MeshComponent->SetStaticMesh(Data->Mesh);
-    }
+	PrimaryActorTick.bCanEverTick = false;
+    MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+    //
+    // if (const FS_Item* Data = ExtraTools::GetStructureFromTable<FS_Item>("/Script/Engine.DataTable'/Game/XYTOR/DataTables/Inventory/DT_Items.DT_Items'", ItemName))
+    // {
+    //     MeshComponent->SetStaticMesh(Data->Mesh);
+    // }
 }
 
 void ASceneItem::Init(const UItem* Item)
