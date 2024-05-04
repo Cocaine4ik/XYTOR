@@ -27,6 +27,9 @@ void APS_Quests::AddQuest(FName QuestName)
     for (const UQuest* Quest : AvailableQuests)
         if (Quest->GetNameInTable() == QuestName)
             return;
+    for (const UQuest* Quest : CompletedQuests)
+        if (Quest->GetNameInTable() == QuestName)
+            return;
 
     if (UQuest* Quest = NewObject<UQuest>(UQuest::StaticClass()))
     {

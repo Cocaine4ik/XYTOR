@@ -25,6 +25,15 @@ void ASceneItem::Init(const UItem* Item)
     MeshComponent->SetStaticMesh(Item->GetItemData().Mesh);
 }
 
+void ASceneItem::Init(FName Name)
+{
+    ItemName = Name;
+    if (const FS_Item* Data = ExtraTools::GetStructureFromTable<FS_Item>("/Script/Engine.DataTable'/Game/XYTOR/DataTables/Inventory/DT_Items.DT_Items'", ItemName))
+    {
+        MeshComponent->SetStaticMesh(Data->Mesh);
+    }
+}
+
 FName ASceneItem::PickUp()
 {
     const FName Result = ItemName;
@@ -36,6 +45,7 @@ FName ASceneItem::PickUp()
 void ASceneItem::BeginPlay()
 {
 	Super::BeginPlay();
+    Init(ItemName);
 }
 
 // Called every frame

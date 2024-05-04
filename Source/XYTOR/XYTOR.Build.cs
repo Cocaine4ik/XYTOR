@@ -18,7 +18,7 @@ public class XYTOR : ModuleRules
 	        "XYTOR/Public/Core/Energy",
 	        "XYTOR/Public/Core/Information",
 	        "XYTOR/Public/Core/Interaction",
-	        "XYTOR/Public/Core/QuestSytem",
+	        "XYTOR/Public/Core/QuestSystem",
 	        "XYTOR/Public/Core/Tokens",
 	        "XYTOR/Public/Core/WidgetManager"
         });

@@ -7,6 +7,7 @@
 #include "UObject/NoExportTypes.h"
 #include "Quest.generated.h"
 
+class APS_Quests;
 /**
  * 
  */
@@ -36,7 +37,7 @@ public:
     UQuest(FName QuestName);
     UFUNCTION(BlueprintPure)
     bool IsCompleted() const;
-    bool Update(EE_SubquestType Type, const APlayerState* PlayerState);
+    bool Update(EE_SubquestType Type, const APS_Quests* PlayerState);
 
     const FText& GetTitle() const;
     const FText& GetDescription() const;

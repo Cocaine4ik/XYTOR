@@ -24,9 +24,12 @@ protected:
 public:
 	// Sets default values for this actor's properties
 	ASceneItem();
-    UFUNCTION(BlueprintCallable)
+    // UFUNCTION(BlueprintCallable, DisplayName="InitWithItem")
     void Init(const UItem* Item);
 
+    // UFUNCTION(BlueprintCallable, DisplayName="InitWithName")
+    void Init(FName Name);
+    
     UFUNCTION(BlueprintCallable)
     FName PickUp();
 

@@ -3,6 +3,7 @@
 
 #include "Core/QuestSystem/Objects/Quest.h"
 
+#include "Core/QuestSystem/PS_Quests.h"
 #include "Core/ExtraTools.h"
 #include "Core/QuestSystem/Structures/S_Quest.h"
 
@@ -33,7 +34,7 @@ bool UQuest::IsCompleted() const
     return CurrentSubquest>=Subquests.Num();
 }
 
-bool UQuest::Update(EE_SubquestType Type, const APlayerState* PlayerState)
+bool UQuest::Update(EE_SubquestType Type, const APS_Quests* PlayerState)
 {
     if (Subquests[CurrentSubquest]->Update(Type, PlayerState))
     {

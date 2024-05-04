@@ -3,6 +3,7 @@
 
 #include "Core/QuestSystem/Objects/Subquest_Token.h"
 
+#include "Core/QuestSystem/PS_Quests.h"
 #include "Core/QuestSystem/Structures/S_Subquest_Token.h"
 
 bool USubquest_Token::InitByName(FName SubquestName)
@@ -27,7 +28,7 @@ bool USubquest_Token::InitByName(FName SubquestName)
     return true;
 } 
 
-bool USubquest_Token::Update(const APlayerState* PlayerState)
+bool USubquest_Token::Update(const APS_Quests* PlayerState)
 {
     return false;
 }
