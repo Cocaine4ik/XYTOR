@@ -41,6 +41,4 @@ public:
     bool AddActor(AActor* NewActor);
     UFUNCTION(BlueprintCallable, Category="Interacting System")
     bool RemoveActor(AActor* TargetActor);
-
-    static bool CanInteract(AActor* TargetActor);
 };

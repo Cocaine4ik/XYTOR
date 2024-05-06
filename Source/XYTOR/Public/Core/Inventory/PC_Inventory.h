@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "W_InventoryBase.h"
 #include "Core/Energy/PC_Energy.h"
+#include "Objects/SceneItem.h"
 #include "PC_Inventory.generated.h"
 
 /**
@@ -15,8 +16,6 @@ class XYTOR_API APC_Inventory : public APC_Energy
 {
 	GENERATED_BODY()
 
-public:
-    
 protected:
     UPROPERTY()
     UW_InventoryBase* InventoryWidget;
@@ -25,7 +24,9 @@ protected:
 
 public:
     virtual void BeginPlay() override;
-    // void DropItem() const;
+    UFUNCTION()
+    void DropItem(UItem* Item, int32 Count) const;
+    void PickUpItem(FName ItemName) const;
     UFUNCTION(BlueprintCallable)
     void DisplayInventory() const;
 };

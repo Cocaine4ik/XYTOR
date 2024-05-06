@@ -5,8 +5,7 @@
 
 #include "Core/Inventory/PS_Inventory.h"
 #include "Core/WidgetManager/HUD_WidgetManager.h"
-
-class AHUD_WidgetManager;
+#include "GameFramework/Character.h"
 
 void APC_Inventory::BeginPlay()
 {
@@ -19,13 +18,30 @@ void APC_Inventory::BeginPlay()
         PS->GetInventory()->OnItemActivated.AddUniqueDynamic(InventoryWidget, &UW_InventoryBase::UW_InventoryBase::ActivateItem);
         PS->GetInventory()->OnItemDeactivated.AddUniqueDynamic(InventoryWidget, &UW_InventoryBase::UW_InventoryBase::DeactivateItem);
         
-        InventoryWidget->OnItemRemoved.BindUObject(PS->GetInventory(), &UAC_Inventory::RemoveItemByPointer);
+        InventoryWidget->OnItemRemoved.BindUObject(this, &APC_Inventory::DropItem);
         InventoryWidget->OnItemActivated.BindUObject(PS->GetInventory(), &UAC_Inventory::ActivateItem);
         InventoryWidget->OnItemDeactivated.BindUObject(PS->GetInventory(), &UAC_Inventory::DeactivateItem);
 
         
     }
     
+}
+
+void APC_Inventory::DropItem(UItem* Item, int32 Count) const
+{
+    GetPlayerState<APS_Inventory>()->GetInventory()->RemoveItemByPointer(Item, Count);
+
+    
+    
+    const FVector Location = GetCharacter()->GetActorLocation() + GetCharacter()->GetActorForwardVector()*100;
+    const FRotator Rotation(0.0f, 0.0f, 0.0f);
+    const FActorSpawnParameters SpawnInfo;
+    GetWorld()->SpawnActor<ASceneItem>(Location, Rotation, SpawnInfo)->Init(Item);
+}
+
+void APC_Inventory::PickUpItem(FName ItemName) const
+{
+    GetPlayerState<APS_Inventory>()->GetInventory()->AddItem(ItemName, 1);
 }
 
 void APC_Inventory::DisplayInventory() const
