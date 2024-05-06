@@ -31,7 +31,8 @@ void APC_Inventory::DropItem(UItem* Item, int32 Count) const
 {
     GetPlayerState<APS_Inventory>()->GetInventory()->RemoveItemByPointer(Item, Count);
 
-    
+    if (!Item->GetItemData().Mesh)
+        return;
     
     const FVector Location = GetCharacter()->GetActorLocation() + GetCharacter()->GetActorForwardVector()*100;
     const FRotator Rotation(0.0f, 0.0f, 0.0f);
