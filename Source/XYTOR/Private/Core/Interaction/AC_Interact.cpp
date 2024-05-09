@@ -2,38 +2,52 @@
 
 
 #include "Core/Interaction/AC_Interact.h"
+#include "Core/Interaction/AC_InteractionHandler.h"
+
 
 // Sets default values for this component's properties
 UAC_Interact::UAC_Interact()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
-	// ...
 }
 
-
-// Called when the game starts
-void UAC_Interact::BeginPlay()
+void UAC_Interact::SetHandlers(TArray<TSubclassOf<UAC_InteractionHandler>> Handlers)
 {
-	Super::BeginPlay();
-
-	// ...
-	
+    for (const auto& HandlerClass: Handlers)
+        if (auto Handler = Cast<UAC_InteractionHandler>(GetOwner()->GetComponentByClass(HandlerClass)))
+            ComponentsToInteract.Push(Handler);
 }
 
-
-// Called every frame
-void UAC_Interact::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UAC_Interact::SetCanInteract(bool CanInteract)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
+    bCanInteract = CanInteract;  
 }
 
-void UAC_Interact::Interact(AActor* InteractingActor)
+void UAC_Interact::SetInteractingText(const FText& NewText)
 {
+    InteractingText = NewText;
+}
+
+TArray<UAC_InteractionHandler*> UAC_Interact::GetHandlers() const
+{
+    if (!ComponentsToInteract.IsEmpty())
+    {
+        return ComponentsToInteract;
+    }
+    TArray<UAC_InteractionHandler*> Handlers;
+    GetOwner()->GetComponents<UAC_InteractionHandler>(Handlers);
+    return Handlers;
+}
+
+FText UAC_Interact::GetInteractingText() const
+{
+    return InteractingText;
+}
+
+bool UAC_Interact::CanInteract() const
+{
+    return bCanInteract;
 }
 
 

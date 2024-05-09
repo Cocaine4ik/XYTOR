@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/Interaction/AC_Interact.h"
+#include "AC_InteractionHandler.h"
 #include "AC_PickUpHandler.generated.h"
 
 class ASceneItem;
@@ -11,7 +11,7 @@ class ASceneItem;
  * 
  */
 UCLASS()
-class XYTOR_API UAC_PickUpHandler : public UAC_Interact
+class XYTOR_API UAC_PickUpHandler : public UAC_InteractionHandler
 {
     GENERATED_BODY()
 

@@ -53,17 +53,20 @@ void APC_Interaction::Interact()
         }
     };
 
+    const UAC_Interact* InteractComponent = Cast<UAC_Interact>(CurrentActor->GetComponentByClass(UAC_Interact::StaticClass()));
+    if (!InteractComponent || !InteractComponent->CanInteract())
+        return;
+    
     // Get specific handlers setup from BP
-    auto Handlers = IInteractable::Execute_GetHandlers(CurrentActor);
-    InteractOverHandlers(Handlers);
+    InteractOverHandlers(InteractComponent->GetHandlers());
 
     // If Handlers aren't empty, then we've already made interaction with specific handlers setup
     // So we don't need default
-    if (!Handlers.IsEmpty()) return;
+    // if (!Handlers.IsEmpty()) return;
 
     // Default handlers setup, get all handlers
-    CurrentActor->GetComponents<UAC_Interact>(Handlers);
-    InteractOverHandlers(Handlers);
+    // CurrentActor->GetComponents<UAC_Interact>(Handlers);
+    // InteractOverHandlers(Handlers);
     
 }
 
@@ -89,13 +92,13 @@ void APC_Interaction::Tick(float DeltaSeconds)
     if (MinInd != CurrentObjectIndex)
     {
         CurrentObjectIndex = MinInd;
-        InteractionBase->UpdateMessage(IInteractable::Execute_GetInteractingText(ObjectsToInteract[CurrentObjectIndex]));
+        InteractionBase->UpdateMessage(GetInteractText(ObjectsToInteract[CurrentObjectIndex]));
     }
 }
 
 bool APC_Interaction::AddActor(AActor* NewActor)
 {
-    if (!NewActor->Implements<UInteractable>())
+    if (!NewActor->GetComponentByClass(UAC_Interact::StaticClass()))
     {
         return false;
     }
@@ -106,7 +109,7 @@ bool APC_Interaction::AddActor(AActor* NewActor)
 
 bool APC_Interaction::RemoveActor(AActor* TargetActor)
 {
-    if (!TargetActor->Implements<UInteractable>())
+    if (!TargetActor->GetComponentByClass(UAC_Interact::StaticClass()))
     {
         return false;
     }
@@ -128,4 +131,14 @@ bool APC_Interaction::RemoveActor(AActor* TargetActor)
 
     ObjectsToInteract.RemoveAtSwap(IndexToRemove);
     return true;
+}
+
+bool APC_Interaction::CanInteract(const AActor* TargetActor)
+{
+    return IsValid(TargetActor->GetComponentByClass(UAC_Interact::StaticClass()));
+}
+
+FText APC_Interaction::GetInteractText(const AActor* TargetActor)
+{
+    return Cast<UAC_Interact>(TargetActor->GetComponentByClass(UAC_Interact::StaticClass()))->GetInteractingText();
 }

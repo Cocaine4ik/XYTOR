@@ -3,12 +3,8 @@
 
 #include "Core/Inventory/Objects/SceneItem.h"
 
+#include "AC_Interact.h"
 #include "Core/ExtraTools.h"
-
-FText ASceneItem::GetInteractingText_Implementation() const
-{
-    return FText::FromString("Pick up");
-}
 
 // Sets default values
 ASceneItem::ASceneItem()
@@ -17,6 +13,9 @@ ASceneItem::ASceneItem()
 	PrimaryActorTick.bCanEverTick = false;
     MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
     InteractComponent = CreateDefaultSubobject<UAC_PickUpHandler>(TEXT("AC_PickUpHandler"));
+
+    InteractConfig = CreateDefaultSubobject<UAC_Interact>(TEXT("AC_Interact"));
+    InteractConfig->SetInteractingText(FText::FromString("Pick up"));
 }
 
 void ASceneItem::Init(const UItem* Item)
@@ -39,12 +38,5 @@ void ASceneItem::BeginPlay()
 {
 	Super::BeginPlay();
     InteractComponent->ItemName = ItemName;
-}
-
-// Called every frame
-void ASceneItem::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
 }
 

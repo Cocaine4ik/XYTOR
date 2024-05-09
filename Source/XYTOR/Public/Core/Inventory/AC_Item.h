@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/Interaction/AC_Interact.h"
+#include "AC_InteractionHandler.h"
 #include "AC_Item.generated.h"
 
 /**
  * 
  */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class XYTOR_API UAC_Item : public UAC_Interact
+class XYTOR_API UAC_Item : public UAC_InteractionHandler
 {
     GENERATED_BODY()
 

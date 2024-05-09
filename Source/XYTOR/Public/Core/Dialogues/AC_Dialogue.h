@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Core/Interaction/AC_Interact.h"
+#include "AC_InteractionHandler.h"
 #include "DialogueGraph/DialogueGraph.h"
 #include "AC_Dialogue.generated.h"
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class XYTOR_API UAC_Dialogue : public UAC_Interact
+class XYTOR_API UAC_Dialogue : public UAC_InteractionHandler
 {
     GENERATED_BODY()
     
