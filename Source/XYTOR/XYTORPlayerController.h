@@ -5,18 +5,14 @@
 #include "CoreMinimal.h"
 #include "Templates/SubclassOf.h"
 #include "GameFramework/PlayerController.h"
-#include "InputActionValue.h"
-#include "Core/Energy/PC_Energy.h"
-#include "Core/Information/PC_Information.h"
-#include "Core/Interaction/PC_Interaction.h"
-#include "Core/QuestSystem/PC_Quests.h"
+#include "Core/Detective/PC_Detective.h"
 #include "XYTORPlayerController.generated.h"
 
 /** Forward declaration to improve compiling times */
 class UNiagaraSystem;
 
 UCLASS()
-class AXYTORPlayerController : public APC_Interaction
+class AXYTORPlayerController : public APC_Detective
 {
 	GENERATED_BODY()
 

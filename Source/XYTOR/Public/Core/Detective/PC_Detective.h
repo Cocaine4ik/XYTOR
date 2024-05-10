@@ -13,5 +13,10 @@ UCLASS()
 class XYTOR_API APC_Detective : public APC_Interaction
 {
 	GENERATED_BODY()
-	
+    
+public:
+    UFUNCTION(BlueprintCallable)
+    void CheckEvidence(AActor* Actor) const;
+    // static void CheckIfEvidence(AActor* Actor);
+
 };
