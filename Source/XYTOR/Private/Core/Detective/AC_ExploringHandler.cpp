@@ -31,9 +31,37 @@ void UAC_ExploringHandler::Interact(AActor* InteractingActor)
 void UAC_ExploringHandler::InitDetecting()
 {
     if (TextComponent) return;
-    UE_LOG(LogTemp, Error, TEXT("Check"));
-    TextComponent = GetOwner()->CreateDefaultSubobject<UTextRenderComponent>(TEXT("Text render"));
-    TextComponent->SetText(FText::FromString("##################################"));
-    TextComponent->SetTextRenderColor(FColor::Red);
-    TextComponent->SetVisibility(true);
+
+    // Получить указатель на владельца этого компонента
+    AActor* Owner = GetOwner();
+
+    if (Owner)
+    {
+        // Создать новый экземпляр компонента UTextRenderComponent
+        TextComponent = NewObject<UTextRenderComponent>(Owner, UTextRenderComponent::StaticClass(), TEXT("EvidenceText"));
+
+        if (TextComponent)
+        {
+            // Установить текст и другие параметры компонента
+            TextComponent->SetText(FText::FromString("Evidence"));
+            TextComponent->SetTextRenderColor(FColor::Red);
+            TextComponent->SetVisibility(true);
+            TextComponent->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
+            TextComponent->SetVerticalAlignment(EVerticalTextAligment::EVRTA_TextTop);
+            TextComponent->SetRelativeLocation({0,0,100});
+
+            // Добавить новый компонент к владельцу
+            TextComponent->AttachToComponent(Owner->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+            TextComponent->RegisterComponent();
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("Failed to create TextRenderComponent"));
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Owner of UAC_Evidence is nullptr"));
+    }
+    
 }
