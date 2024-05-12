@@ -18,12 +18,13 @@ class XYTOR_API UAC_ExploringHandler : public UAC_InteractionHandler
 
 protected:
     UPROPERTY()
-    UTextRenderComponent* TextComponent;
-    bool isDetected = false;
+    UTextRenderComponent* TextComponent = nullptr;
+    void Highlight() const;
+    void DisplayLoading() const;
+    void InitDetecting();
 public:
     void Detect();
-    void Explore();
+    void UnDetect();
 
     virtual void Interact(AActor* InteractingActor) override;
-    void InitDetecting();
 };
