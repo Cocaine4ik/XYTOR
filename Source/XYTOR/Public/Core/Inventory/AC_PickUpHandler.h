@@ -6,19 +6,26 @@
 #include "AC_InteractionHandler.h"
 #include "AC_PickUpHandler.generated.h"
 
-class ASceneItem;
 /**
  * 
  */
-UCLASS()
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable)
 class XYTOR_API UAC_PickUpHandler : public UAC_InteractionHandler
 {
     GENERATED_BODY()
 
-    friend ASceneItem;
+public:
+    UAC_PickUpHandler();
+    
 protected:
-    UPROPERTY(VisibleAnywhere)
-    FName ItemName;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Items")
+    TMap<FName, int32> Items;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Items")
+    bool bDestroyAfterPickUp = true;
+    
 public:
     virtual void Interact(AActor* InteractingActor) override;
+
+    void SetItem(FName Name, int32 Count);
 };

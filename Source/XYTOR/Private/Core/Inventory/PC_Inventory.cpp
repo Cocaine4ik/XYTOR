@@ -21,28 +21,27 @@ void APC_Inventory::BeginPlay()
         InventoryWidget->OnItemRemoved.BindUObject(this, &APC_Inventory::DropItem);
         InventoryWidget->OnItemActivated.BindUObject(PS->GetInventory(), &UAC_Inventory::ActivateItem);
         InventoryWidget->OnItemDeactivated.BindUObject(PS->GetInventory(), &UAC_Inventory::DeactivateItem);
-
-        
     }
     
 }
 
 void APC_Inventory::DropItem(UItem* Item, int32 Count) const
 {
-    GetPlayerState<APS_Inventory>()->GetInventory()->RemoveItemByPointer(Item, Count);
-
-    if (!Item->GetItemData().Mesh)
-        return;
+    if (const auto& ItemActorClass = Item->GetItemData().ItemActorClass)
+    {
+        GetPlayerState<APS_Inventory>()->GetInventory()->RemoveItemByPointer(Item, Count);
     
-    const FVector Location = GetCharacter()->GetActorLocation() + GetCharacter()->GetActorForwardVector()*100;
-    const FRotator Rotation(0.0f, 0.0f, 0.0f);
-    const FActorSpawnParameters SpawnInfo;
-    GetWorld()->SpawnActor<ASceneItem>(Location, Rotation, SpawnInfo)->Init(Item);
+        const FVector Location = GetCharacter()->GetActorLocation() + GetCharacter()->GetActorForwardVector()*100;
+        const FRotator Rotation(0.0f, 0.0f, 0.0f);
+        const FActorSpawnParameters SpawnInfo;
+    
+        GetWorld()->SpawnActor<ASceneItem>(ItemActorClass, Location, Rotation, SpawnInfo)->Init(Item->GetItemName(), Count);
+    }
 }
 
-void APC_Inventory::PickUpItem(FName ItemName) const
+void APC_Inventory::PickUpItem(FName ItemName, int32 Count) const
 {
-    GetPlayerState<APS_Inventory>()->GetInventory()->AddItem(ItemName, 1);
+    GetPlayerState<APS_Inventory>()->GetInventory()->AddItem(ItemName, Count);
 }
 
 void APC_Inventory::DisplayInventory() const
