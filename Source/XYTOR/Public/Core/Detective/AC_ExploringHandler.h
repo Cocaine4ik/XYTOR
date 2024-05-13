@@ -17,14 +17,26 @@ class XYTOR_API UAC_ExploringHandler : public UAC_InteractionHandler
     GENERATED_BODY()
 
 protected:
+    UPROPERTY(EditAnywhere)
+    FText LongInfo;
+    UPROPERTY(EditAnywhere)
+    FText ShortInfo;
+    
     UPROPERTY()
     UTextRenderComponent* TextComponent = nullptr;
+    mutable bool bHighlighted = false;
+    
+    void UnHighlight() const;
     void Highlight() const;
     void DisplayLoading() const;
     void InitDetecting();
+
+    void DisplayShortInformation() const;
+    void DisplayLongInformation() const;
+    void ChangeInteractionComponent() const;
 public:
-    void Detect();
-    void UnDetect();
+    void Detect() const;
+    void UnDetect() const;
 
     virtual void Interact(AActor* InteractingActor) override;
 };
