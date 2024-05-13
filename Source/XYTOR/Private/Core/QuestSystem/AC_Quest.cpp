@@ -6,7 +6,6 @@
 
 UAC_Quest::UAC_Quest()
 {
-    InteractingText = FText::FromString(TEXT("Accept Quest (E)"));
 }
 
 void UAC_Quest::Interact(AActor* InteractingActor)
