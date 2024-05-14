@@ -4,6 +4,13 @@
 #include "Core/Detective/AC_ExploringHandler.h"
 
 
+void UAC_ExploringHandler::FirstInteraction()
+{
+    InitDetecting();
+    const float Delay = DisplayLoading();
+    GetOwner()->GetWorldTimerManager().SetTimer(TimerHandler, this, &UAC_ExploringHandler::DisplayLongInformation, Delay, false);
+}
+
 void UAC_ExploringHandler::UnHighlight() const
 {
     UE_LOG(LogTemp, Warning, TEXT("Evidance lost"));
@@ -18,9 +25,10 @@ void UAC_ExploringHandler::Highlight() const
     ChangeInteractionComponent();
 }
 
-void UAC_ExploringHandler::DisplayLoading() const
+float UAC_ExploringHandler::DisplayLoading() const 
 {
-    
+    UE_LOG(LogTemp, Warning, TEXT("Evidance LOADING"));
+    return 2.f;
 }
 
 void UAC_ExploringHandler::ChangeInteractionComponent() const
@@ -60,11 +68,10 @@ void UAC_ExploringHandler::Interact(AActor* InteractingActor)
 {
     Super::Interact(InteractingActor);
 
-    if (TextComponent)
-        DisplayLoading();
-    
-    InitDetecting();
-    DisplayLongInformation();
+    if (!TextComponent)
+        FirstInteraction();
+    else
+        DisplayLongInformation();
 }
 
 void UAC_ExploringHandler::InitDetecting()

@@ -25,10 +25,13 @@ protected:
     UPROPERTY()
     UTextRenderComponent* TextComponent = nullptr;
     mutable bool bHighlighted = false;
+    FTimerHandle TimerHandler;
+
+    void FirstInteraction();
     
     void UnHighlight() const;
     void Highlight() const;
-    void DisplayLoading() const;
+    float DisplayLoading() const;
     void InitDetecting();
 
     void DisplayShortInformation() const;
