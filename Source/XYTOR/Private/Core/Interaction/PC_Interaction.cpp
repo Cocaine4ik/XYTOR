@@ -2,10 +2,9 @@
 
 
 #include "Core/Interaction/PC_Interaction.h"
-
+#include "Core/Interaction/AC_InteractionHandler.h"
 #include "Core/WidgetManager/HUD_WidgetManager.h"
 #include "Core/Interaction/AC_Interact.h"
-#include "Core/Interaction/IInteractable.h"
 #include "VectorTypes.h"
 #include "GameFramework/Character.h"
 
@@ -53,7 +52,7 @@ void APC_Interaction::Interact()
         }
     };
 
-    const UAC_Interact* InteractComponent = Cast<UAC_Interact>(CurrentActor->GetComponentByClass(UAC_Interact::StaticClass()));
+    const UAC_Interact* InteractComponent = CurrentActor->GetComponentByClass<UAC_Interact>();
     if (!InteractComponent || !InteractComponent->CanInteract())
         return;
     
@@ -92,6 +91,7 @@ void APC_Interaction::Tick(float DeltaSeconds)
     if (MinInd != CurrentObjectIndex)
     {
         CurrentObjectIndex = MinInd;
+        
         InteractionBase->UpdateMessage(GetInteractText(ObjectsToInteract[CurrentObjectIndex]));
     }
 }
@@ -140,5 +140,5 @@ bool APC_Interaction::CanInteract(const AActor* TargetActor)
 
 FText APC_Interaction::GetInteractText(const AActor* TargetActor)
 {
-    return Cast<UAC_Interact>(TargetActor->GetComponentByClass(UAC_Interact::StaticClass()))->GetInteractingText();
+    return TargetActor->GetComponentByClass<UAC_Interact>()->GetInteractingText();
 }

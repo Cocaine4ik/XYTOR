@@ -3,41 +3,38 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "IInteractable.h"
-#include "Item.h"
-#include "Core/Inventory/AC_PickUpHandler.h"
 #include "GameFramework/Actor.h"
 #include "SceneItem.generated.h"
+
+class UBoxComponent;
+class UAC_PickUpHandler;
+class UAC_Interact;
 
 UCLASS(BlueprintType)
 class XYTOR_API ASceneItem : public AActor
 {
-private:
     GENERATED_BODY()
 
-protected:
-    UPROPERTY(BlueprintReadOnly, EditAnywhere, meta=(ExposeOnSpawn=true))
-    FName ItemName;
-    
-    UPROPERTY(BlueprintReadOnly)
-    UStaticMeshComponent* MeshComponent;
-    
-    UPROPERTY(BlueprintReadOnly)
-    UAC_PickUpHandler* InteractComponent;
-    
-    UPROPERTY(BlueprintReadOnly)
-    UAC_Interact* InteractConfig;
-    
 public:
-	ASceneItem();
-    // UFUNCTION(BlueprintCallable, DisplayName="InitWithItem")
-    void Init(const UItem* Item);
-
-    // UFUNCTION(BlueprintCallable, DisplayName="InitWithName")
-    void Init(FName Name);
+    ASceneItem();
 
 protected:
-	virtual void BeginPlay() override;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    FName ItemName;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    UBoxComponent* BoxComponent;
+    
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    USkeletalMeshComponent* MeshComponent;
+    
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    UAC_PickUpHandler* PickUpComponent;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    UAC_Interact* InteractConfig;
+
+public:
+    void Init(FName Name, int32 Count) const;
+    
 };
