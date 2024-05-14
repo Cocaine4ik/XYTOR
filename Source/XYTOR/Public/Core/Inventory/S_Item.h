@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "E_ItemType.h"
 #include "Engine/DataTable.h"
-
+#include "Objects/SceneItem.h"
 #include "S_Item.generated.h"
 
 /**
@@ -29,5 +29,5 @@ struct FS_Item : public FTableRowBase
     UTexture2D* Icon;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="S_Item")
-    UStaticMesh* Mesh;
+    TSubclassOf<ASceneItem> ItemActorClass;
 };

@@ -2,10 +2,9 @@
 
 
 #include "Core/Inventory/Objects/Item.h"
-
 #include "Core/ExtraTools.h"
-#include "Core/Inventory/Objects/Ammo.h"
-#include "Core/Inventory/Objects/Weapon.h"
+#include "..\..\..\..\Public\Core\Inventory\Objects\Ammo.h"
+#include "..\..\..\..\Public\Core\Inventory\Objects\Weapon.h"
 
 bool UItem::AdditionalInit(FName ItemName)
 {
@@ -63,7 +62,7 @@ UItem* UItem::MakeItem(FName ItemName, UObject* Parent)
     if (!Data)
         return nullptr;
 
-    auto ItemClass = GetClass(Data->ItemType);
+    const auto ItemClass = GetClass(Data->ItemType);
     
     UItem* Item = NewObject<UItem>(Parent, ItemClass);
     if (Item->Init(ItemName, Data))

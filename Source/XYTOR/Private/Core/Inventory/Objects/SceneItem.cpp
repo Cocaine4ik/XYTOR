@@ -2,41 +2,29 @@
 
 
 #include "Core/Inventory/Objects/SceneItem.h"
-
 #include "AC_Interact.h"
-#include "Core/ExtraTools.h"
+#include "Components/BoxComponent.h"
+#include "Core/Inventory/AC_PickUpHandler.h"
 
 // Sets default values
 ASceneItem::ASceneItem()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-    MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-    InteractComponent = CreateDefaultSubobject<UAC_PickUpHandler>(TEXT("AC_PickUpHandler"));
 
+    MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
+    RootComponent = MeshComponent;
+    
+    BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollison"));
+    BoxComponent->SetupAttachment(RootComponent);
+    
+    PickUpComponent = CreateDefaultSubobject<UAC_PickUpHandler>(TEXT("AC_PickUpHandler"));
+    
     InteractConfig = CreateDefaultSubobject<UAC_Interact>(TEXT("AC_Interact"));
-    InteractConfig->SetInteractingText(FText::FromString("Pick up"));
+    InteractConfig->SetInteractingText(FText::FromString(TEXT("Pick up (E)")));
 }
 
-void ASceneItem::Init(const UItem* Item)
+void ASceneItem::Init(FName Name, int32 Count) const
 {
-    InteractComponent->ItemName = ItemName = Item->GetItemName();
-    MeshComponent->SetStaticMesh(Item->GetItemData().Mesh);
+    PickUpComponent->SetItem(Name, Count);
 }
-
-void ASceneItem::Init(FName Name)
-{
-    InteractComponent->ItemName = ItemName = Name;
-    if (const FS_Item* Data = ExtraTools::GetStructureFromTable<FS_Item>("/Script/Engine.DataTable'/Game/XYTOR/DataTables/Inventory/DT_Items.DT_Items'", ItemName))
-    {
-        MeshComponent->SetStaticMesh(Data->Mesh);
-    }
-}
-
-// Called when the game starts or when spawned
-void ASceneItem::BeginPlay()
-{
-	Super::BeginPlay();
-    InteractComponent->ItemName = ItemName;
-}
-

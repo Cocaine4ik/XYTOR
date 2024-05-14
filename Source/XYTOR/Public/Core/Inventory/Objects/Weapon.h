@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Item.h"
-#include "UObject/NoExportTypes.h"
+#include "Core/Weapons/Data/S_Weapon.h"
 #include "Weapon.generated.h"
 
 /**
@@ -13,6 +13,10 @@
 UCLASS(BlueprintType)
 class XYTOR_API UWeapon : public UItem
 {
-	GENERATED_BODY()
-	
+    GENERATED_BODY()
+
+protected:
+    FS_Weapon* WeaponData;
+
+    virtual bool AdditionalInit(FName ItemName) override;
 };

@@ -26,7 +26,7 @@ public:
     virtual void BeginPlay() override;
     UFUNCTION()
     void DropItem(UItem* Item, int32 Count) const;
-    void PickUpItem(FName ItemName) const;
+    void PickUpItem(FName ItemName, int32 Count) const;
     UFUNCTION(BlueprintCallable)
     void DisplayInventory() const;
 };
