@@ -76,6 +76,9 @@ void APC_Interaction::Tick(float DeltaSeconds)
     double Min = UE::Geometry::DistanceSquared(GetCharacter()->GetActorLocation(), ComponentsToInteract[0]->GetOwner()->GetActorLocation());
     for (int8 i = 1; i < ComponentsToInteract.Num(); ++i)
     {
+        if(!ComponentsToInteract[i]->CanInteract())
+            continue;
+        
         const double Dist = UE::Geometry::DistanceSquared(GetCharacter()->GetActorLocation(), ComponentsToInteract[i]->GetOwner()->GetActorLocation());
         if (Dist < Min)
         {
