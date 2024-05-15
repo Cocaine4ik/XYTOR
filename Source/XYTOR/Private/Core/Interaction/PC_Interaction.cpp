@@ -35,53 +35,48 @@ void APC_Interaction::BeginPlay()
 
 void APC_Interaction::Interact()
 {
-    if (CurrentObjectIndex<0 || CurrentObjectIndex>=ObjectsToInteract.Num()) return;
-    
-    // Check for null actor
-    const auto* CurrentActor = ObjectsToInteract[CurrentObjectIndex];
-    if (!CurrentActor) return;
-    
-    // Iterate over handlers and interact with each handler
-    auto InteractOverHandlers = [this](const auto& Handlers){
-        if (!Handlers.IsEmpty())
+    if (CurrentObjectIndex<0 || CurrentObjectIndex>=ComponentsToInteract.Num()) return;
+    {
+        // Check for null actor
+        const auto* CurrentComponent = ComponentsToInteract[CurrentObjectIndex];
+        if (!CurrentComponent)
         {
-            for (const auto Handler : Handlers)
-            {
-                Handler->Interact(this);
-            }
+            // RemoveActor(CurrentComponent->GetOwner());
+            return;
         }
-    };
-
-    const UAC_Interact* InteractComponent = CurrentActor->GetComponentByClass<UAC_Interact>();
-    if (!InteractComponent || !InteractComponent->CanInteract())
-        return;
     
-    // Get specific handlers setup from BP
-    InteractOverHandlers(InteractComponent->GetHandlers());
-
-    // If Handlers aren't empty, then we've already made interaction with specific handlers setup
-    // So we don't need default
-    // if (!Handlers.IsEmpty()) return;
-
-    // Default handlers setup, get all handlers
-    // CurrentActor->GetComponents<UAC_Interact>(Handlers);
-    // InteractOverHandlers(Handlers);
-    
+        // Iterate over handlers and interact with each handler
+        auto InteractOverHandlers = [this](const auto& Handlers){
+            if (!Handlers.IsEmpty())
+            {
+                for (const auto Handler : Handlers)
+                {
+                    Handler->Interact(this);
+                }
+            }
+        };
+        
+        if (!CurrentComponent->CanInteract())
+            return;
+        // Get specific handlers setup from BP
+        InteractOverHandlers(CurrentComponent->GetHandlers());
+    }
 }
 
 void APC_Interaction::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-    if (ObjectsToInteract.IsEmpty())
+    
+    if (ComponentsToInteract.IsEmpty())
     {
         return;
     }
 
     int8 MinInd = 0;
-    double Min = UE::Geometry::DistanceSquared(GetCharacter()->GetActorLocation(), ObjectsToInteract[0]->GetActorLocation());
-    for (int8 i = 1; i < ObjectsToInteract.Num(); ++i)
+    double Min = UE::Geometry::DistanceSquared(GetCharacter()->GetActorLocation(), ComponentsToInteract[0]->GetOwner()->GetActorLocation());
+    for (int8 i = 1; i < ComponentsToInteract.Num(); ++i)
     {
-        const double Dist = UE::Geometry::DistanceSquared(GetCharacter()->GetActorLocation(), ObjectsToInteract[i]->GetActorLocation());
+        const double Dist = UE::Geometry::DistanceSquared(GetCharacter()->GetActorLocation(), ComponentsToInteract[i]->GetOwner()->GetActorLocation());
         if (Dist < Min)
         {
             MinInd = i;
@@ -91,36 +86,34 @@ void APC_Interaction::Tick(float DeltaSeconds)
     if (MinInd != CurrentObjectIndex)
     {
         CurrentObjectIndex = MinInd;
-        
-        InteractionBase->UpdateMessage(GetInteractText(ObjectsToInteract[CurrentObjectIndex]));
+        InteractionBase->UpdateMessage(ComponentsToInteract[CurrentObjectIndex]->GetInteractingText());
     }
 }
 
 bool APC_Interaction::AddActor(AActor* NewActor)
 {
-    if (!NewActor->GetComponentByClass(UAC_Interact::StaticClass()))
-    {
+    
+    UAC_Interact* InteractComponent = NewActor->GetComponentByClass<UAC_Interact>();
+    if (!InteractComponent)
         return false;
-    }
-
-    ObjectsToInteract.Push(NewActor);
+    ComponentsToInteract.Push(InteractComponent);
     return true;
 }
 
 bool APC_Interaction::RemoveActor(AActor* TargetActor)
 {
-    if (!TargetActor->GetComponentByClass(UAC_Interact::StaticClass()))
-    {
+    UAC_Interact* InteractComponent = TargetActor->GetComponentByClass<UAC_Interact>();
+    if (!InteractComponent)
         return false;
-    }
 
-    const int32 IndexToRemove = ObjectsToInteract.Find(TargetActor);
+    // For components
+    const int32 IndexToRemove = ComponentsToInteract.Find(InteractComponent);
     if (IndexToRemove == CurrentObjectIndex)
     {
         CurrentObjectIndex = -1;
         InteractionBase->CleanMessage();
     }
-    else if (CurrentObjectIndex == ObjectsToInteract.Num() - 1)
+    else if (CurrentObjectIndex == ComponentsToInteract.Num() - 1)
     {
         CurrentObjectIndex = IndexToRemove;
     }
@@ -128,8 +121,7 @@ bool APC_Interaction::RemoveActor(AActor* TargetActor)
     {
         --CurrentObjectIndex;
     }
-
-    ObjectsToInteract.RemoveAtSwap(IndexToRemove);
+    ComponentsToInteract.RemoveAtSwap(IndexToRemove);
     return true;
 }
 

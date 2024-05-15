@@ -16,12 +16,12 @@ class UAC_Interact;
 UCLASS()
 class XYTOR_API APC_Interaction : public APC_Quests
 {
-private:
     GENERATED_BODY()
-
 private:
+    // UPROPERTY()
+    // TArray<AActor*> ObjectsToInteract;
     UPROPERTY()
-    TArray<AActor*> ObjectsToInteract;
+    TArray<UAC_Interact*> ComponentsToInteract;
     int32 CurrentObjectIndex=-1;
     
 protected:
