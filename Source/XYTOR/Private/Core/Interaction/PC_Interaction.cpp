@@ -72,9 +72,9 @@ void APC_Interaction::Tick(float DeltaSeconds)
         return;
     }
 
-    int8 MinInd = 0;
-    double Min = UE::Geometry::DistanceSquared(GetCharacter()->GetActorLocation(), ComponentsToInteract[0]->GetOwner()->GetActorLocation());
-    for (int8 i = 1; i < ComponentsToInteract.Num(); ++i)
+    int8 MinInd = -1;
+    double Min = TNumericLimits<double>().Max();
+    for (int8 i = 0; i < ComponentsToInteract.Num(); ++i)
     {
         if(!ComponentsToInteract[i]->CanInteract())
             continue;
@@ -86,7 +86,12 @@ void APC_Interaction::Tick(float DeltaSeconds)
             Min = Dist;
         }
     }
-    if (MinInd != CurrentObjectIndex)
+    if (MinInd<0)
+    {
+        CurrentObjectIndex = -1;
+        InteractionBase->CleanMessage();
+    }
+    else if (MinInd != CurrentObjectIndex)
     {
         CurrentObjectIndex = MinInd;
         InteractionBase->UpdateMessage(ComponentsToInteract[CurrentObjectIndex]->GetInteractingText());

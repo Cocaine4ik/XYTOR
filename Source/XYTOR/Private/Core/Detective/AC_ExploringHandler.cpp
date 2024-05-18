@@ -3,6 +3,8 @@
 
 #include "Core/Detective/AC_ExploringHandler.h"
 
+#include "Components/DecalComponent.h"
+
 
 void UAC_ExploringHandler::FirstInteraction()
 {
@@ -13,13 +15,17 @@ void UAC_ExploringHandler::FirstInteraction()
 
 void UAC_ExploringHandler::UnHighlight() const
 {
+    GetOwner()->GetComponentByClass<UStaticMeshComponent>()->SetOverlayMaterial(nullptr);
     UE_LOG(LogTemp, Warning, TEXT("Evidance lost"));
     bHighlighted = false;
     ChangeInteractionComponent();
+    if (TextComponent)
+        TextComponent->SetVisibility(false);
 }
 
 void UAC_ExploringHandler::Highlight() const
 {
+    GetOwner()->GetComponentByClass<UStaticMeshComponent>()->SetOverlayMaterial(Material);
     UE_LOG(LogTemp, Warning, TEXT("Evidance found"));
     bHighlighted = true;
     ChangeInteractionComponent();
@@ -51,6 +57,24 @@ void UAC_ExploringHandler::ChangeInteractionComponent() const
     }
 }
 
+UAC_ExploringHandler::UAC_ExploringHandler()
+{
+    if (!Material)
+    {
+        static ConstructorHelpers::FObjectFinder<UMaterialInterface> MaterialFinder(TEXT("/Script/Engine.Material'/Game/XYTOR/Core/Detective/Highlighing.Highlighing'"));
+        if (MaterialFinder.Succeeded())
+        {
+            Material = MaterialFinder.Object;
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("UYourActorComponent: Material not found!"));
+        }
+
+
+    }
+}
+
 void UAC_ExploringHandler::Detect() const
 {
     Highlight();
@@ -78,7 +102,7 @@ void UAC_ExploringHandler::InitDetecting()
 {
     if (TextComponent)
     {
-        UE_LOG(LogTemp, Error, TEXT("Double Initialisation in UAC_ExploringHandler"));
+        UE_LOG(LogTemp, Error, TEXT("Double ExploringHandle Initialisation in UAC_ExploringHandler"));
         return;
     }
 
@@ -98,11 +122,12 @@ void UAC_ExploringHandler::InitDetecting()
 
         TextComponent->AttachToComponent(Owner->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
         TextComponent->RegisterComponent();
+
+        TextComponent->SetVisibility(false);
     }
     else
         UE_LOG(LogTemp, Error, TEXT("Failed to create TextRenderComponent"));
 }
-
 
 void UAC_ExploringHandler::DisplayShortInformation() const
 {

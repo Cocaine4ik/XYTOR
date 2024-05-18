@@ -16,6 +16,7 @@ class XYTOR_API UAC_ExploringHandler : public UAC_InteractionHandler
 {
     GENERATED_BODY()
 
+    inline static UMaterialInterface* Material = nullptr;
 protected:
     UPROPERTY(EditAnywhere)
     FText LongInfo;
@@ -36,8 +37,10 @@ protected:
 
     void DisplayShortInformation() const;
     void DisplayLongInformation() const;
+
     void ChangeInteractionComponent() const;
 public:
+    UAC_ExploringHandler();
     void Detect() const;
     void UnDetect() const;
 
