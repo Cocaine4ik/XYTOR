@@ -7,6 +7,7 @@
 #include "Core/Interaction/PC_Interaction.h"
 #include "PC_Detective.generated.h"
 
+class UW_EvidenceBase;
 /**
  * 
  */
@@ -16,6 +17,8 @@ class XYTOR_API APC_Detective : public APC_Interaction
 	GENERATED_BODY()
 
 protected:
+    UPROPERTY(EditAnywhere, Category="Widgets")
+    TSubclassOf<UW_EvidenceBase> EvidenceWidgetClass;
     UPROPERTY()
     TArray<UAC_ExploringHandler*> DetectiveComponents;
     UPROPERTY(BlueprintReadOnly)

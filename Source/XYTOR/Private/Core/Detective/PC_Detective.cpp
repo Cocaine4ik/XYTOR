@@ -7,7 +7,7 @@
 void APC_Detective::DetectAll() const
 {
     for (const UAC_ExploringHandler* el: DetectiveComponents)
-        el->Detect();
+        el->Detect(EvidenceWidgetClass);
 }
 
 void APC_Detective::UnDetectAll() const
@@ -41,7 +41,7 @@ bool APC_Detective::DetectEvidence(AActor* Actor)
 
     DetectiveComponents.Push(EvidenceComponent);
     if (bShouldDetect)
-        EvidenceComponent->Detect();
+        EvidenceComponent->Detect(EvidenceWidgetClass);
     return true;
 }
 

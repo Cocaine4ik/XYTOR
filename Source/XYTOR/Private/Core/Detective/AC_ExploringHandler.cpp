@@ -2,40 +2,8 @@
 
 
 #include "Core/Detective/AC_ExploringHandler.h"
+#include "Components/WidgetComponent.h"
 
-#include "Components/DecalComponent.h"
-
-
-void UAC_ExploringHandler::FirstInteraction()
-{
-    InitDetecting();
-    const float Delay = DisplayLoading();
-    GetOwner()->GetWorldTimerManager().SetTimer(TimerHandler, this, &UAC_ExploringHandler::DisplayLongInformation, Delay, false);
-}
-
-void UAC_ExploringHandler::UnHighlight() const
-{
-    GetOwner()->GetComponentByClass<UStaticMeshComponent>()->SetOverlayMaterial(nullptr);
-    UE_LOG(LogTemp, Warning, TEXT("Evidance lost"));
-    bHighlighted = false;
-    ChangeInteractionComponent();
-    if (TextComponent)
-        TextComponent->SetVisibility(false);
-}
-
-void UAC_ExploringHandler::Highlight() const
-{
-    GetOwner()->GetComponentByClass<UStaticMeshComponent>()->SetOverlayMaterial(Material);
-    UE_LOG(LogTemp, Warning, TEXT("Evidance found"));
-    bHighlighted = true;
-    ChangeInteractionComponent();
-}
-
-float UAC_ExploringHandler::DisplayLoading() const 
-{
-    UE_LOG(LogTemp, Warning, TEXT("Evidance LOADING"));
-    return 2.f;
-}
 
 void UAC_ExploringHandler::ChangeInteractionComponent() const
 {
@@ -70,60 +38,78 @@ UAC_ExploringHandler::UAC_ExploringHandler()
         {
             UE_LOG(LogTemp, Error, TEXT("UYourActorComponent: Material not found!"));
         }
-
-
     }
 }
 
-void UAC_ExploringHandler::Detect() const
+void UAC_ExploringHandler::Detect(TSubclassOf<UW_EvidenceBase> WidgetClass_) const
 {
-    Highlight();
-    if (TextComponent)
+    if(!WidgetClass)
+        WidgetClass=WidgetClass_;
+    bHighlighted = true;
+    GetOwner()->GetComponentByClass<UStaticMeshComponent>()->SetOverlayMaterial(Material);
+    if (WidgetComponent)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("DETECTING WITH WIDGET"));
         DisplayShortInformation();
+    }
+    ChangeInteractionComponent();
 }
 
 void UAC_ExploringHandler::UnDetect() const
 {
-    UnHighlight();
+    bHighlighted = false;
+    GetOwner()->GetComponentByClass<UStaticMeshComponent>()->SetOverlayMaterial(nullptr);
+    if (WidgetComponent)
+        WidgetComponent->SetVisibility(false);
+    ChangeInteractionComponent();
 }
-
 
 void UAC_ExploringHandler::Interact(AActor* InteractingActor)
 {
-    Super::Interact(InteractingActor);
+   // Super::Interact(InteractingActor);
 
-    if (!TextComponent)
-        FirstInteraction();
-    else
-        DisplayLongInformation();
+    if (!WidgetComponent)
+        InitWidget();
+    DisplayLongInformation();
 }
 
-void UAC_ExploringHandler::InitDetecting()
+void UAC_ExploringHandler::InitWidget()
 {
-    if (TextComponent)
+    if (!WidgetClass)
     {
-        UE_LOG(LogTemp, Error, TEXT("Double ExploringHandle Initialisation in UAC_ExploringHandler"));
+        UE_LOG(LogTemp, Error, TEXT("No WidgetClass in UAC_ExploringHandler"));
         return;
     }
-
+    if (WidgetComponent)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Double Widget Initialisation in UAC_ExploringHandler"));
+        return;
+    }
     AActor* Owner = GetOwner();
     if (!Owner)
     {
         UE_LOG(LogTemp, Error, TEXT("Owner of UAC_Evidence is nullptr"));
         return;
     }
-    TextComponent = NewObject<UTextRenderComponent>(Owner, UTextRenderComponent::StaticClass(), TEXT("EvidenceText"));
-    if (TextComponent)
+    WidgetComponent = NewObject<UWidgetComponent>(Owner, UWidgetComponent::StaticClass(), TEXT("EvidenceWidget"));
+    if (WidgetComponent)
     {
-        TextComponent->SetTextRenderColor(FColor::Red);
-        TextComponent->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
-        TextComponent->SetVerticalAlignment(EVerticalTextAligment::EVRTA_TextTop);
-        TextComponent->SetRelativeLocation({0,0,50});
+        WidgetComponent->SetRelativeLocation({0,0,50});
+        WidgetComponent->AttachToComponent(Owner->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+        WidgetComponent->RegisterComponent();
+        WidgetComponent->SetWidgetClass(WidgetClass);
+        WidgetComponent->SetVisibility(true);
 
-        TextComponent->AttachToComponent(Owner->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
-        TextComponent->RegisterComponent();
+        WidgetComponent->SetDrawAtDesiredSize(true);
+        WidgetComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+        WidgetComponent->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
+        WidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
 
-        TextComponent->SetVisibility(false);
+        // Получите виджет и вызовите метод InitInfo
+        WidgetComponent->InitWidget();
+        
+        Widget = Cast<UW_EvidenceBase>(WidgetComponent->GetWidget());
+        Widget->InitInfo(LongInfo,ShortInfo);
     }
     else
         UE_LOG(LogTemp, Error, TEXT("Failed to create TextRenderComponent"));
@@ -131,12 +117,12 @@ void UAC_ExploringHandler::InitDetecting()
 
 void UAC_ExploringHandler::DisplayShortInformation() const
 {
-    TextComponent->SetText(ShortInfo);
-    TextComponent->SetVisibility(true);
+    Widget->DisplayShortInfo();
+    WidgetComponent->SetVisibility(true);
 }
 
 void UAC_ExploringHandler::DisplayLongInformation() const
 {
-    TextComponent->SetText(LongInfo);
-    TextComponent->SetVisibility(true);
+    Widget->DisplayLongInfo();
+    WidgetComponent->SetVisibility(true);
 }
