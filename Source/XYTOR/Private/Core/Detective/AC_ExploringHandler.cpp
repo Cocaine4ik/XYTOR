@@ -15,14 +15,10 @@ void UAC_ExploringHandler::ChangeInteractionComponent() const
         return;
     }
     if (bHighlighted)
-    {
         InteractComponent->SetInteractingText(FText::FromString("Explore"));
-        InteractComponent->SetCanInteract(true);
-    }
-    else
-    {
-        InteractComponent->SetCanInteract(false);
-    }
+
+    InteractComponent->SetCanInteract(bHighlighted);
+ 
 }
 
 UAC_ExploringHandler::UAC_ExploringHandler()
@@ -45,13 +41,14 @@ void UAC_ExploringHandler::Detect(TSubclassOf<UW_EvidenceBase> WidgetClass_) con
 {
     if(!WidgetClass)
         WidgetClass=WidgetClass_;
-    bHighlighted = true;
+    UE_LOG(LogTemp, Warning, TEXT("DETECTING"));
     GetOwner()->GetComponentByClass<UStaticMeshComponent>()->SetOverlayMaterial(Material);
-    if (WidgetComponent)
+    if (WidgetComponent && !bHighlighted)
     {
         UE_LOG(LogTemp, Warning, TEXT("DETECTING WITH WIDGET"));
         DisplayShortInformation();
     }
+    bHighlighted = true;
     ChangeInteractionComponent();
 }
 
@@ -59,6 +56,7 @@ void UAC_ExploringHandler::UnDetect() const
 {
     bHighlighted = false;
     GetOwner()->GetComponentByClass<UStaticMeshComponent>()->SetOverlayMaterial(nullptr);
+    
     if (WidgetComponent)
         WidgetComponent->SetVisibility(false);
     ChangeInteractionComponent();
@@ -98,7 +96,7 @@ void UAC_ExploringHandler::InitWidget()
         WidgetComponent->AttachToComponent(Owner->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
         WidgetComponent->RegisterComponent();
         WidgetComponent->SetWidgetClass(WidgetClass);
-        WidgetComponent->SetVisibility(true);
+        WidgetComponent->SetVisibility(false);
 
         WidgetComponent->SetDrawAtDesiredSize(true);
         WidgetComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
@@ -106,7 +104,7 @@ void UAC_ExploringHandler::InitWidget()
         WidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
 
         // Получите виджет и вызовите метод InitInfo
-        WidgetComponent->InitWidget();
+        //WidgetComponent->InitWidget();
         
         Widget = Cast<UW_EvidenceBase>(WidgetComponent->GetWidget());
         Widget->InitInfo(LongInfo,ShortInfo);

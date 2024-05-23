@@ -23,12 +23,13 @@ protected:
     UPROPERTY(BlueprintReadWrite)
     bool bLoaded = false; 
 public:
-    UFUNCTION(BlueprintNativeEvent)
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
     void InitInfo(const FText& NewLongInfo, const FText& NewShortInfo);
     
-    UFUNCTION(BlueprintNativeEvent)
-    void DisplayShortInfo() const;
-    UFUNCTION(BlueprintNativeEvent)
-    void DisplayLongInfo() const;
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+    void DisplayShortInfo();
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+    void DisplayLongInfo();
 };
+
 
