@@ -19,9 +19,6 @@ public:
     APC_Dialogues();
     
 protected:
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dialogues System")
-    UAC_DialogueHandler* DialogueHandler;
-    
     UPROPERTY(EditDefaultsOnly, Category = "Widgets")
     TSubclassOf<UW_DialogueWindow> DialogueWindowWidgetClass;
 

@@ -10,6 +10,8 @@ class APS_Information;
 
 void APC_Information::BeginPlay()
 {
+    Super::BeginPlay();
+    
     if(!InformationWidgetClass)
     {
         UE_LOG(LogTemp, Error, TEXT("No widget class in PC_Information"));

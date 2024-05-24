@@ -98,6 +98,8 @@ void APC_Interaction::Tick(float DeltaSeconds)
 
 bool APC_Interaction::AddActor(AActor* NewActor)
 {
+    // GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, FString::Printf(TEXT("Add Actor: %s"), *NewActor->GetName()));
+    
     if (!NewActor->GetComponentByClass(UAC_Interact::StaticClass()))
     {
         return false;
