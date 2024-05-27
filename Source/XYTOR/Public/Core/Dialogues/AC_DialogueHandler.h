@@ -3,59 +3,30 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AC_ProceedDialogue.h"
+#include "AC_InteractionHandler.h"
 #include "DialogueGraph/DialogueGraph.h"
 #include "AC_DialogueHandler.generated.h"
 
-class APS_Tokens;
-class UNPCDialogueGraphNode;
-class UPlayerDialogueGraphNode;
-struct FGameplayTagContainer;
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBeginDialogueSignature, const UNPCDialogueGraphNode*, NPCNode, const TArray<UPlayerDialogueGraphNode*>, PlayerDialogueNodes);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnProceedDialogueSignature, const UNPCDialogueGraphNode*, NPCNode, const TArray<UPlayerDialogueGraphNode*>, PlayerDialogueNodes);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEndDialogueSignature);
-
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class XYTOR_API UAC_DialogueHandler : public UAC_ProceedDialogue
+class XYTOR_API UAC_DialogueHandler : public UAC_InteractionHandler
 {
     GENERATED_BODY()
-
+    
+    //FTestBool Test;
 public:
     // Sets default values for this component's properties
     UAC_DialogueHandler();
 
-    UPROPERTY(BlueprintAssignable, VisibleAnywhere)
-    FOnBeginDialogueSignature OnBeginDialogueDelegate;
-    
-    UPROPERTY(BlueprintAssignable, VisibleAnywhere)
-    FOnProceedDialogueSignature OnProceedDialogueDelegate;
-    
-    UPROPERTY(BlueprintAssignable, VisibleAnywhere)
-    FOnEndDialogueSignature OnEndDialogueDelegate;
-
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogues System")
     UDialogueGraph* DialogueGraph;
-    
-    UPROPERTY(BlueprintReadOnly,Category = "Dialogues System")
-    UNPCDialogueGraphNode* CurrentNPCNode;
-
-    UPROPERTY(BlueprintReadOnly, Category = "Dialogues System")
-    TArray<UPlayerDialogueGraphNode*> CurrentPlayerDialogueNodes;
-
-    bool InitializeTokens();
 
 public:
-    UFUNCTION(BlueprintCallable)
-    void BeginDialogue(UDialogueGraph* Dialogue);
-
-    virtual void ProceedDialogue(const UPlayerDialogueGraphNode* Node) override;
+    UFUNCTION(Blueprintable)
+    UDialogueGraph* GetDialogue() const { return DialogueGraph; }
     
-    UFUNCTION(BlueprintCallable)
-    void EndDialogue();
-
-private:
-    UPROPERTY()
-    APS_Tokens* Tokens;
+    UFUNCTION(Blueprintable)
+    void SetDialogue(UDialogueGraph* Dialogue) { DialogueGraph = Dialogue; }
+    
+    virtual void Interact(AActor* InteractingActor) override;
 };

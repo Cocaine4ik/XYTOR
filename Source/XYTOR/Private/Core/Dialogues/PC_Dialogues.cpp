@@ -2,36 +2,33 @@
 
 
 #include "Core/Dialogues/PC_Dialogues.h"
-
-#include "AC_DialogueHandler.h"
-#include "AC_ProceedDialogue.h"
+#include "AC_Dialogues.h"
+#include "PS_Dialogues.h"
 #include "Core/Dialogues/W_DialogueWindow.h"
 #include "Core/WidgetManager/HUD_WidgetManager.h"
-#include "DialogueGraph/NPCDialogueGraphNode.h"
 #include "DialogueGraph/PlayerDialogueGraphNode.h"
-#include "GameplayTagContainer.h"
 
 APC_Dialogues::APC_Dialogues()
 {
-    DialogueHandler = CreateDefaultSubobject<UAC_DialogueHandler>(TEXT("DialogueHandler"));
-    DialogueHandler->RegisterComponent();
-
 }
 
 void APC_Dialogues::BeginPlay()
 {
     Super::BeginPlay();
-
-    check(DialogueHandler)
     
     if(InitializeWidget())
     {
-        DialogueWindowWidget->InitializeWidget(DialogueHandler);
+
+        const auto DialogueComponent = GetPlayerState<APS_Dialogues>()->GetDialogue();
+
+        if (!DialogueComponent) return;
         
-        DialogueHandler->OnBeginDialogueDelegate.AddDynamic(this, &APC_Dialogues::OnBeginDialogue);
-        DialogueHandler->OnBeginDialogueDelegate.AddDynamic(DialogueWindowWidget, &UW_DialogueWindow::OnUpdateDialogue);
-        DialogueHandler->OnProceedDialogueDelegate.AddDynamic(DialogueWindowWidget, &UW_DialogueWindow::OnUpdateDialogue);
-        DialogueHandler->OnEndDialogueDelegate.AddUniqueDynamic(this, &APC_Dialogues::OnEndDialogue);
+        DialogueWindowWidget->InitializeWidget(DialogueComponent);
+
+        DialogueComponent->OnBeginDialogueDelegate.AddDynamic(this, &APC_Dialogues::OnBeginDialogue);
+        DialogueComponent->OnBeginDialogueDelegate.AddDynamic(DialogueWindowWidget, &UW_DialogueWindow::OnUpdateDialogue);
+        DialogueComponent->OnProceedDialogueDelegate.AddDynamic(DialogueWindowWidget, &UW_DialogueWindow::OnUpdateDialogue);
+        DialogueComponent->OnEndDialogueDelegate.AddUniqueDynamic(this, &APC_Dialogues::OnEndDialogue);
     }
 }
 

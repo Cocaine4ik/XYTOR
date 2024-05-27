@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "W_InformationBase.h"
-#include "GameFramework/PlayerController.h"
+#include "Core/Player/PC_Base.h"
 #include "Interfaces/IPC_Information.h"
 #include "PC_Information.generated.h"
 
@@ -12,7 +12,7 @@
  * 
  */
 UCLASS(Blueprintable)
-class XYTOR_API APC_Information : public APlayerController, public IIPC_Information
+class XYTOR_API APC_Information : public APC_Base, public IIPC_Information
 {
 protected:
 
