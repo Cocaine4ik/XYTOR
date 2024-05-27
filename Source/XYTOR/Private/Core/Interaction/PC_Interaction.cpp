@@ -100,7 +100,6 @@ void APC_Interaction::Tick(float DeltaSeconds)
 
 bool APC_Interaction::AddActor(AActor* NewActor)
 {
-    
     UAC_Interact* InteractComponent = NewActor->GetComponentByClass<UAC_Interact>();
     if (!InteractComponent)
         return false;
